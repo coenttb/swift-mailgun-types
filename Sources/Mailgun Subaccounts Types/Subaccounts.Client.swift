@@ -22,7 +22,7 @@ extension Mailgun.Subaccounts {
         public var create: @Sendable (_ request: Mailgun.Subaccounts.Create.Request) async throws -> Mailgun.Subaccounts.Subaccount
         
         @DependencyEndpoint
-        public var delete: @Sendable () async throws -> Mailgun.Subaccounts.Delete.Response
+        public var delete: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.Delete.Response
         
         @DependencyEndpoint
         public var disable: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.Disable.Response
