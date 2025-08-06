@@ -20,7 +20,7 @@ extension Mailgun.Domains.DomainKeys {
         public let publicKey: String?
         public let isActive: Bool?
         public let createdAt: String?
-        
+
         public init(
             signingDomain: String,
             selector: String,
@@ -34,7 +34,7 @@ extension Mailgun.Domains.DomainKeys {
             self.isActive = isActive
             self.createdAt = createdAt
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case signingDomain = "signing_domain"
             case selector
@@ -43,13 +43,13 @@ extension Mailgun.Domains.DomainKeys {
             case createdAt = "created_at"
         }
     }
-    
+
     public struct Paging: Sendable, Codable, Equatable {
         public let first: String?
         public let last: String?
         public let next: String?
         public let previous: String?
-        
+
         public init(
             first: String? = nil,
             last: String? = nil,
@@ -76,7 +76,7 @@ extension Mailgun.Domains.DomainKeys.List {
         public let limit: Int?
         public let signingDomain: String?
         public let selector: String?
-        
+
         public init(
             page: String? = nil,
             limit: Int? = nil,
@@ -88,7 +88,7 @@ extension Mailgun.Domains.DomainKeys.List {
             self.signingDomain = signingDomain
             self.selector = selector
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case page
             case limit
@@ -96,11 +96,11 @@ extension Mailgun.Domains.DomainKeys.List {
             case selector
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let items: [Mailgun.Domains.DomainKeys.Key]
         public let paging: Mailgun.Domains.DomainKeys.Paging?
-        
+
         public init(
             items: [Mailgun.Domains.DomainKeys.Key],
             paging: Mailgun.Domains.DomainKeys.Paging? = nil
@@ -123,7 +123,7 @@ extension Mailgun.Domains.DomainKeys.Create {
         public let selector: String
         public let bits: Int?
         public let pem: String?
-        
+
         public init(
             signingDomain: String,
             selector: String,
@@ -135,7 +135,7 @@ extension Mailgun.Domains.DomainKeys.Create {
             self.bits = bits
             self.pem = pem
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case signingDomain = "signing_domain"
             case selector
@@ -143,13 +143,13 @@ extension Mailgun.Domains.DomainKeys.Create {
             case pem
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let signingDomain: String?
         public let selector: String?
         public let dnsRecord: DnsRecord?
         public let message: String?
-        
+
         public init(
             signingDomain: String? = nil,
             selector: String? = nil,
@@ -161,14 +161,14 @@ extension Mailgun.Domains.DomainKeys.Create {
             self.dnsRecord = dnsRecord
             self.message = message
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case signingDomain = "signing_domain"
             case selector
             case dnsRecord = "dns_record"
             case message
         }
-        
+
         public struct DnsRecord: Sendable, Codable, Equatable {
             public let isActive: Bool?
             public let cached: [String]?
@@ -176,7 +176,7 @@ extension Mailgun.Domains.DomainKeys.Create {
             public let recordType: String?
             public let valid: String?
             public let value: String?
-            
+
             public init(
                 isActive: Bool? = nil,
                 cached: [String]? = nil,
@@ -192,7 +192,7 @@ extension Mailgun.Domains.DomainKeys.Create {
                 self.valid = valid
                 self.value = value
             }
-            
+
             private enum CodingKeys: String, CodingKey {
                 case isActive = "is_active"
                 case cached
@@ -215,7 +215,7 @@ extension Mailgun.Domains.DomainKeys.Delete {
     public struct Request: Sendable, Codable, Equatable {
         public let signingDomain: String
         public let selector: String
-        
+
         public init(
             signingDomain: String,
             selector: String
@@ -223,16 +223,16 @@ extension Mailgun.Domains.DomainKeys.Delete {
             self.signingDomain = signingDomain
             self.selector = selector
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case signingDomain = "signing_domain"
             case selector
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -248,7 +248,7 @@ extension Mailgun.Domains.DomainKeys {
 extension Mailgun.Domains.DomainKeys.Activate {
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -265,7 +265,7 @@ extension Mailgun.Domains.DomainKeys.DomainKeysList {
     public struct Response: Sendable, Codable, Equatable {
         public let items: [Mailgun.Domains.DomainKeys.Key]
         public let totalCount: Int?
-        
+
         public init(
             items: [Mailgun.Domains.DomainKeys.Key],
             totalCount: Int? = nil
@@ -273,7 +273,7 @@ extension Mailgun.Domains.DomainKeys.DomainKeysList {
             self.items = items
             self.totalCount = totalCount
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case items
             case totalCount = "total_count"
@@ -290,7 +290,7 @@ extension Mailgun.Domains.DomainKeys {
 extension Mailgun.Domains.DomainKeys.Deactivate {
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -306,19 +306,19 @@ extension Mailgun.Domains.DomainKeys {
 extension Mailgun.Domains.DomainKeys.SetDkimAuthority {
     public struct Request: Sendable, Codable, Equatable {
         public let dkimAuthority: String
-        
+
         public init(dkimAuthority: String) {
             self.dkimAuthority = dkimAuthority
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case dkimAuthority = "dkim_authority"
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -334,19 +334,19 @@ extension Mailgun.Domains.DomainKeys {
 extension Mailgun.Domains.DomainKeys.SetDkimSelector {
     public struct Request: Sendable, Codable, Equatable {
         public let dkimSelector: String
-        
+
         public init(dkimSelector: String) {
             self.dkimSelector = dkimSelector
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case dkimSelector = "dkim_selector"
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }

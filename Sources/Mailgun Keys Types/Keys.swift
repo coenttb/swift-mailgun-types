@@ -6,8 +6,6 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum Keys {}
 }
@@ -25,7 +23,7 @@ extension Mailgun.Keys {
         public let requestor: String?
         public let userName: String?
         public let expiresAt: String?
-        
+
         public init(
             id: String,
             createdAt: String,
@@ -51,7 +49,7 @@ extension Mailgun.Keys {
             self.userName = userName
             self.expiresAt = expiresAt
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case id
             case createdAt = "created_at"
@@ -65,7 +63,7 @@ extension Mailgun.Keys {
             case userName = "user_name"
             case expiresAt = "expires_at"
         }
-        
+
         public enum Kind: String, Sendable, Codable, Equatable {
             case domain = "domain"
             case user = "user"
@@ -73,12 +71,12 @@ extension Mailgun.Keys {
             case `public` = "public"
         }
     }
-    
+
     public enum List {
         public struct Response: Sendable, Decodable, Equatable {
             public let items: [Mailgun.Keys.Key]
             public let totalCount: Int
-            
+
             public init(
                 items: [Mailgun.Keys.Key],
                 totalCount: Int
@@ -86,20 +84,20 @@ extension Mailgun.Keys {
                 self.items = items
                 self.totalCount = totalCount
             }
-            
+
             private enum CodingKeys: String, CodingKey {
                 case items
                 case totalCount = "total_count"
             }
         }
     }
-    
+
     public enum Create {
         public struct Request: Sendable, Codable, Equatable {
             public let description: String?
             public let role: String
             public let kind: String?
-            
+
             public init(
                 description: String? = nil,
                 role: String = "admin",
@@ -110,11 +108,11 @@ extension Mailgun.Keys {
                 self.kind = kind
             }
         }
-        
+
         public struct Response: Sendable, Decodable, Equatable {
             public let message: String
             public let key: Key
-            
+
             public init(
                 message: String,
                 key: Key
@@ -122,7 +120,7 @@ extension Mailgun.Keys {
                 self.message = message
                 self.key = key
             }
-            
+
             public struct Key: Sendable, Decodable, Equatable {
                 public let id: String
                 public let description: String?
@@ -135,7 +133,7 @@ extension Mailgun.Keys {
                 public let domainName: String?
                 public let requestor: String?
                 public let userName: String?
-                
+
                 public init(
                     id: String,
                     description: String? = nil,
@@ -161,7 +159,7 @@ extension Mailgun.Keys {
                     self.requestor = requestor
                     self.userName = userName
                 }
-                
+
                 private enum CodingKeys: String, CodingKey {
                     case id
                     case description
@@ -178,33 +176,33 @@ extension Mailgun.Keys {
             }
         }
     }
-    
+
     public enum Delete {
         public struct Response: Sendable, Decodable, Equatable {
             public let message: String
-            
+
             public init(message: String) {
                 self.message = message
             }
         }
     }
-    
+
     public enum PublicKey {
         public struct Request: Sendable, Codable, Equatable {
             public let publicKey: String
-            
+
             public init(publicKey: String) {
                 self.publicKey = publicKey
             }
-            
+
             private enum CodingKeys: String, CodingKey {
                 case publicKey = "public_key"
             }
         }
-        
+
         public struct Response: Sendable, Decodable, Equatable {
             public let message: String
-            
+
             public init(message: String) {
                 self.message = message
             }

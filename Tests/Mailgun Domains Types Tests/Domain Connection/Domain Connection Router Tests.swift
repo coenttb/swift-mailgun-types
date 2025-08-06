@@ -6,9 +6,9 @@
 //
 
 import DependenciesTestSupport
-import Testing
-@testable import Mailgun_Domains_Types
 import Domain
+@testable import Mailgun_Domains_Types
+import Testing
 
 @Suite("Domain Connection Router Tests")
 struct DomainConnectionRouterTests {

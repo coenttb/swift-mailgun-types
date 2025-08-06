@@ -14,16 +14,15 @@ import Mailgun_IPPools_Types
 import Mailgun_IPs_Types
 import Mailgun_Keys_Types
 import Mailgun_Lists_Types
-import Mailgun_Types_Shared
 import Mailgun_Messages_Types
 import Mailgun_Reporting_Types
 import Mailgun_Routes_Types
 import Mailgun_Subaccounts_Types
 import Mailgun_Suppressions_Types
 import Mailgun_Templates_Types
+import Mailgun_Types_Shared
 import Mailgun_Users_Types
 import Mailgun_Webhooks_Types
-import Mailgun_Types_Shared
 import URLRouting
 
 extension Mailgun {

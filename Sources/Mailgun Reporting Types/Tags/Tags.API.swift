@@ -168,7 +168,6 @@ extension Path<PathBuilder.Component<String>> {
         "tag"
     }
 
-
     nonisolated(unsafe)
     public static let domains: Path<PathBuilder.Component<String>> = Path {
         "domains"

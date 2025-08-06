@@ -25,7 +25,7 @@ extension Mailgun.Domains.DomainKeys {
 extension Mailgun.Domains.DomainKeys.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Domains.DomainKeys.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.list)) {
@@ -52,7 +52,7 @@ extension Mailgun.Domains.DomainKeys.API {
                         }
                     }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.create)) {
                     Method.post
                     Path { "v1" }
@@ -60,7 +60,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { "keys" }
                     Body(.form(Mailgun.Domains.DomainKeys.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.delete)) {
                     Method.delete
                     Path { "v1" }
@@ -68,7 +68,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { "keys" }
                     Body(.form(Mailgun.Domains.DomainKeys.Delete.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.activate)) {
                     Method.put
                     Path { "v4" }
@@ -78,7 +78,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { Parse(.string) }
                     Path { "activate" }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.listDomainKeys)) {
                     Method.get
                     Path { "v4" }
@@ -86,7 +86,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { Parse(.string) }
                     Path { "keys" }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.deactivate)) {
                     Method.put
                     Path { "v4" }
@@ -96,7 +96,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { Parse(.string) }
                     Path { "deactivate" }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.setDkimAuthority)) {
                     Method.put
                     Path { "v3" }
@@ -105,7 +105,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { "dkim_authority" }
                     Body(.form(Mailgun.Domains.DomainKeys.SetDkimAuthority.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DomainKeys.API.setDkimSelector)) {
                     Method.put
                     Path { "v3" }

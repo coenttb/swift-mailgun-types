@@ -18,7 +18,7 @@ extension Mailgun.Domains.Domains.Tracking {
         public let click: ClickSettings
         public let open: OpenSettings
         public let unsubscribe: UnsubscribeSettings
-        
+
         public init(
             click: ClickSettings,
             open: OpenSettings,
@@ -29,28 +29,28 @@ extension Mailgun.Domains.Domains.Tracking {
             self.unsubscribe = unsubscribe
         }
     }
-    
+
     public struct ClickSettings: Sendable, Codable, Equatable {
         public let active: Bool
-        
+
         public init(active: Bool) {
             self.active = active
         }
     }
-    
+
     public struct OpenSettings: Sendable, Codable, Equatable {
         public let active: Bool
-        
+
         public init(active: Bool) {
             self.active = active
         }
     }
-    
+
     public struct UnsubscribeSettings: Sendable, Codable, Equatable {
         public let active: Bool
         public let htmlFooter: String?
         public let textFooter: String?
-        
+
         public init(
             active: Bool,
             htmlFooter: String? = nil,
@@ -60,7 +60,7 @@ extension Mailgun.Domains.Domains.Tracking {
             self.htmlFooter = htmlFooter
             self.textFooter = textFooter
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case active
             case htmlFooter = "html_footer"
@@ -78,7 +78,7 @@ extension Mailgun.Domains.Domains.Tracking {
 extension Mailgun.Domains.Domains.Tracking.Get {
     public struct Response: Sendable, Codable, Equatable {
         public let tracking: Mailgun.Domains.Domains.Tracking.Settings
-        
+
         public init(tracking: Mailgun.Domains.Domains.Tracking.Settings) {
             self.tracking = tracking
         }
@@ -94,16 +94,16 @@ extension Mailgun.Domains.Domains.Tracking {
 extension Mailgun.Domains.Domains.Tracking.UpdateClick {
     public struct Request: Sendable, Codable, Equatable {
         public let active: Bool
-        
+
         public init(active: Bool) {
             self.active = active
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
         public let click: Mailgun.Domains.Domains.Tracking.ClickSettings
-        
+
         public init(
             message: String,
             click: Mailgun.Domains.Domains.Tracking.ClickSettings
@@ -123,16 +123,16 @@ extension Mailgun.Domains.Domains.Tracking {
 extension Mailgun.Domains.Domains.Tracking.UpdateOpen {
     public struct Request: Sendable, Codable, Equatable {
         public let active: Bool
-        
+
         public init(active: Bool) {
             self.active = active
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
         public let open: Mailgun.Domains.Domains.Tracking.OpenSettings
-        
+
         public init(
             message: String,
             open: Mailgun.Domains.Domains.Tracking.OpenSettings
@@ -154,7 +154,7 @@ extension Mailgun.Domains.Domains.Tracking.UpdateUnsubscribe {
         public let active: Bool
         public let htmlFooter: String?
         public let textFooter: String?
-        
+
         public init(
             active: Bool,
             htmlFooter: String? = nil,
@@ -164,18 +164,18 @@ extension Mailgun.Domains.Domains.Tracking.UpdateUnsubscribe {
             self.htmlFooter = htmlFooter
             self.textFooter = textFooter
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case active
             case htmlFooter = "html_footer"
             case textFooter = "text_footer"
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
         public let unsubscribe: Mailgun.Domains.Domains.Tracking.UnsubscribeSettings
-        
+
         public init(
             message: String,
             unsubscribe: Mailgun.Domains.Domains.Tracking.UnsubscribeSettings

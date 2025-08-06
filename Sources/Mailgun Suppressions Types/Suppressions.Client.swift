@@ -5,10 +5,8 @@
 //  Created by Coen ten Thije Boonkkamp on 24/12/2024.
 //
 
-import Mailgun_Types_Shared
 import Dependencies
 import Mailgun_Types_Shared
-
 extension Mailgun.Suppressions {
     public struct Client: Sendable {
         public let bounces: Bounces.Client

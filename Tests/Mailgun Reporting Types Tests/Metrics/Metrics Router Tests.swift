@@ -6,8 +6,8 @@
 //
 
 import DependenciesTestSupport
-import Testing
 @testable import Mailgun_Reporting_Types
+import Testing
 
 @Suite(
     "Metrics Router Tests"
@@ -37,10 +37,10 @@ struct MetricsRouterTests {
         )
 
         let api: Mailgun.Reporting.Metrics.API = .getAccountMetrics(request: request)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v1/analytics/metrics")
-        
+
         let match: Mailgun.Reporting.Metrics.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.getAccountMetrics))
         #expect(match.getAccountMetrics?.start == "2024-01-01")

@@ -23,7 +23,7 @@ extension Mailgun.Routes {
 extension Mailgun.Routes.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Routes.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Routes.API.create)) {
@@ -32,7 +32,7 @@ extension Mailgun.Routes.API {
                     Path.routes
                     Body(.form(Mailgun.Routes.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Routes.API.list)) {
                     Method.get
                     Path { "v3" }
@@ -46,14 +46,14 @@ extension Mailgun.Routes.API {
                         }
                     }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Routes.API.get)) {
                     Method.get
                     Path { "v3" }
                     Path.routes
                     Path { Parse(.string) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Routes.API.update)) {
                     Method.put
                     Path { "v3" }
@@ -61,14 +61,14 @@ extension Mailgun.Routes.API {
                     Path { Parse(.string) }
                     Body(.form(Mailgun.Routes.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Routes.API.delete)) {
                     Method.delete
                     Path { "v3" }
                     Path.routes
                     Path { Parse(.string) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Routes.API.match)) {
                     Method.get
                     Path { "v3" }
@@ -88,7 +88,7 @@ extension Path<PathBuilder.Component<String>> {
     public static let routes: Path<PathBuilder.Component<String>> = Path {
         "routes"
     }
-    
+
     nonisolated(unsafe)
     public static let match: Path<PathBuilder.Component<String>> = Path {
         "match"

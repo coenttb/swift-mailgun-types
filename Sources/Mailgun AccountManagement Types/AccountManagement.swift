@@ -7,8 +7,6 @@
 
 import EmailAddress
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum AccountManagement {}
 }
@@ -23,7 +21,7 @@ extension Mailgun.AccountManagement.Update {
         public let inactiveSessionTimeout: Int?
         public let absoluteSessionTimeout: Int?
         public let logoutRedirectUrl: String?
-        
+
         public init(
             name: String? = nil,
             inactiveSessionTimeout: Int? = nil,
@@ -35,7 +33,7 @@ extension Mailgun.AccountManagement.Update {
             self.absoluteSessionTimeout = absoluteSessionTimeout
             self.logoutRedirectUrl = logoutRedirectUrl
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case name
             case inactiveSessionTimeout = "inactive_session_timeout"
@@ -43,10 +41,10 @@ extension Mailgun.AccountManagement.Update {
             case logoutRedirectUrl = "logout_redirect_url"
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -66,7 +64,7 @@ extension Mailgun.AccountManagement.HttpSigningKey.Get {
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String?
         public let httpSigningKey: String
-        
+
         public init(
             message: String? = nil,
             httpSigningKey: String
@@ -74,7 +72,7 @@ extension Mailgun.AccountManagement.HttpSigningKey.Get {
             self.message = message
             self.httpSigningKey = httpSigningKey
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case message
             case httpSigningKey = "http_signing_key"
@@ -86,7 +84,7 @@ extension Mailgun.AccountManagement.HttpSigningKey.Regenerate {
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let httpSigningKey: String
-        
+
         public init(
             message: String,
             httpSigningKey: String
@@ -94,7 +92,7 @@ extension Mailgun.AccountManagement.HttpSigningKey.Regenerate {
             self.message = message
             self.httpSigningKey = httpSigningKey
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case message
             case httpSigningKey = "http_signing_key"
@@ -118,13 +116,13 @@ extension Mailgun.AccountManagement.Sandbox.Auth.Recipients {
     public struct Recipient: Sendable, Decodable, Equatable {
         public let email: String
         public let activated: Bool
-        
+
         public init(email: String, activated: Bool) {
             self.email = email
             self.activated = activated
         }
     }
-    
+
     public enum List {}
     public enum Add {}
     public enum Delete {}
@@ -133,7 +131,7 @@ extension Mailgun.AccountManagement.Sandbox.Auth.Recipients {
 extension Mailgun.AccountManagement.Sandbox.Auth.Recipients.List {
     public struct Response: Sendable, Decodable, Equatable {
         public let recipients: [Mailgun.AccountManagement.Sandbox.Auth.Recipients.Recipient]
-        
+
         public init(recipients: [Mailgun.AccountManagement.Sandbox.Auth.Recipients.Recipient]) {
             self.recipients = recipients
         }
@@ -143,15 +141,15 @@ extension Mailgun.AccountManagement.Sandbox.Auth.Recipients.List {
 extension Mailgun.AccountManagement.Sandbox.Auth.Recipients.Add {
     public struct Request: Sendable, Codable, Equatable {
         public let email: String
-        
+
         public init(email: String) {
             self.email = email
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let recipient: Mailgun.AccountManagement.Sandbox.Auth.Recipients.Recipient
-        
+
         public init(recipient: Mailgun.AccountManagement.Sandbox.Auth.Recipients.Recipient) {
             self.recipient = recipient
         }
@@ -161,7 +159,7 @@ extension Mailgun.AccountManagement.Sandbox.Auth.Recipients.Add {
 extension Mailgun.AccountManagement.Sandbox.Auth.Recipients.Delete {
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -175,7 +173,7 @@ extension Mailgun.AccountManagement {
 extension Mailgun.AccountManagement.ResendActivationEmail {
     public struct Response: Sendable, Decodable, Equatable {
         public let success: Bool
-        
+
         public init(success: Bool) {
             self.success = success
         }
@@ -198,11 +196,11 @@ extension Mailgun.AccountManagement.SAML.Organization {
 extension Mailgun.AccountManagement.SAML.Organization.Get {
     public struct Response: Sendable, Decodable, Equatable {
         public let samlOrgId: String
-        
+
         public init(samlOrgId: String) {
             self.samlOrgId = samlOrgId
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case samlOrgId = "saml_org_id"
         }
@@ -213,7 +211,7 @@ extension Mailgun.AccountManagement.SAML.Organization.Add {
     public struct Request: Sendable, Codable, Equatable {
         public let userId: String
         public let domain: String?
-        
+
         public init(
             userId: String,
             domain: String? = nil
@@ -221,17 +219,17 @@ extension Mailgun.AccountManagement.SAML.Organization.Add {
             self.userId = userId
             self.domain = domain
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case userId = "user_id"
             case domain
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let samlOrgId: String
-        
+
         public init(
             message: String,
             samlOrgId: String
@@ -239,7 +237,7 @@ extension Mailgun.AccountManagement.SAML.Organization.Add {
             self.message = message
             self.samlOrgId = samlOrgId
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case message
             case samlOrgId = "saml_org_id"

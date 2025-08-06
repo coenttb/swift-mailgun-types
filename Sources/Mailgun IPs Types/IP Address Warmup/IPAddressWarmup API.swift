@@ -21,7 +21,7 @@ extension Mailgun.IPAddressWarmup {
 extension Mailgun.IPAddressWarmup.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.IPAddressWarmup.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.IPAddressWarmup.API.list)) {
@@ -29,14 +29,14 @@ extension Mailgun.IPAddressWarmup.API {
                     Path { "v3" }
                     Path.ipWarmups
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.IPAddressWarmup.API.get)) {
                     Method.get
                     Path { "v3" }
                     Path.ipWarmups
                     Path { Parse(.string) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.IPAddressWarmup.API.create)) {
                     Method.post
                     Path { "v3" }
@@ -44,7 +44,7 @@ extension Mailgun.IPAddressWarmup.API {
                     Path { Parse(.string) }
                     Body(.form(Mailgun.IPAddressWarmup.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.IPAddressWarmup.API.delete)) {
                     Method.delete
                     Path { "v3" }

@@ -6,8 +6,6 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum Credentials {}
 }
@@ -18,7 +16,7 @@ extension Mailgun.Credentials {
         public let mailbox: String
         public let createdAt: String
         public let sizeBytes: String?
-        
+
         public init(
             login: String,
             mailbox: String,
@@ -30,7 +28,7 @@ extension Mailgun.Credentials {
             self.createdAt = createdAt
             self.sizeBytes = sizeBytes
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case login
             case mailbox
@@ -48,7 +46,7 @@ extension Mailgun.Credentials.List {
     public struct Request: Sendable, Codable, Equatable {
         public let skip: Int?
         public let limit: Int?
-        
+
         public init(
             skip: Int? = nil,
             limit: Int? = nil
@@ -57,11 +55,11 @@ extension Mailgun.Credentials.List {
             self.limit = limit
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let totalCount: Int
         public let items: [Mailgun.Credentials.Credential]
-        
+
         public init(
             totalCount: Int,
             items: [Mailgun.Credentials.Credential]
@@ -69,7 +67,7 @@ extension Mailgun.Credentials.List {
             self.totalCount = totalCount
             self.items = items
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case totalCount = "total_count"
             case items
@@ -87,7 +85,7 @@ extension Mailgun.Credentials.Create {
         public let mailbox: String?
         public let password: String?
         public let system: Bool?
-        
+
         public init(
             login: String? = nil,
             mailbox: String? = nil,
@@ -100,12 +98,12 @@ extension Mailgun.Credentials.Create {
             self.system = system
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let note: String?
         public let credentials: [String: String]?
-        
+
         public init(
             message: String,
             note: String? = nil,
@@ -125,17 +123,17 @@ extension Mailgun.Credentials {
 extension Mailgun.Credentials.Update {
     public struct Request: Sendable, Codable, Equatable {
         public let password: String?
-        
+
         public init(password: String? = nil) {
             self.password = password
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let note: String?
         public let credentials: [String: String]?
-        
+
         public init(
             message: String,
             note: String? = nil,
@@ -157,7 +155,7 @@ extension Mailgun.Credentials.Delete {
         public let message: String
         public let spec: String?
         public let count: Int?
-        
+
         public init(
             message: String,
             spec: String? = nil,
@@ -181,17 +179,17 @@ extension Mailgun.Credentials.Mailbox {
 extension Mailgun.Credentials.Mailbox.Update {
     public struct Request: Sendable, Codable, Equatable {
         public let password: String?
-        
+
         public init(password: String? = nil) {
             self.password = password
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let note: String?
         public let credentials: [String: String]?
-        
+
         public init(
             message: String,
             note: String? = nil,

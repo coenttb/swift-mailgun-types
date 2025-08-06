@@ -5,8 +5,8 @@
 //  Created by Coen ten Thije Boonkkamp on 02/08/2025.
 //
 
-import URLFormCoding
 import Foundation
+import URLFormCoding
 
 extension Form.Decoder {
     public static var mailgun: Form.Decoder {
@@ -16,15 +16,15 @@ extension Form.Decoder {
                 if let date = rfc2822Formatter.date(from: dateString) {
                     return date
                 }
-                
+
                 if let timestamp = Double(dateString) {
                     return Date(timeIntervalSince1970: timestamp)
                 }
-                
+
                 if let date = ISO8601DateFormatter().date(from: dateString) {
                     return date
                 }
-                
+
                 return nil
             },
             arrayParsingStrategy: .brackets

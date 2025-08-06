@@ -6,10 +6,10 @@
 //
 
 import DependenciesTestSupport
-import Testing
-import EmailAddress
 import Domain
+import EmailAddress
 @testable import Mailgun_Suppressions_Types
+import Testing
 
 @Suite(
     "Bounces Router Tests"
@@ -22,10 +22,10 @@ struct BouncesRouterTests {
 
         let testData = Data("test".utf8)
         let api: Mailgun.Suppressions.Bounces.API = .importList(domain: try .init("test.domain.com"), request: testData)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/bounces/import")
-        
+
         // Note: Import endpoints use multipart form data which doesn't support round-trip testing
         // due to the complex nature of multipart boundary generation and Data encoding
     }
@@ -38,10 +38,10 @@ struct BouncesRouterTests {
             domain: try .init("test.domain.com"),
             address: try .init("test@example.com")
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/bounces/test@example.com")
-        
+
         let match: Mailgun.Suppressions.Bounces.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
         #expect(match.get?.domain == (try .init("test.domain.com")))
@@ -56,10 +56,10 @@ struct BouncesRouterTests {
             domain: try .init("test.domain.com"),
             address: try .init("test@example.com")
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/bounces/test@example.com")
-        
+
         let match: Mailgun.Suppressions.Bounces.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
         #expect(match.delete?.domain == (try .init("test.domain.com")))
@@ -75,7 +75,7 @@ struct BouncesRouterTests {
             page: "next",
             term: "test"
         )
-        
+
         let api: Mailgun.Suppressions.Bounces.API = .list(domain: try .init("test.domain.com"), request: request)
 
         let url = router.url(for: api)
@@ -87,7 +87,7 @@ struct BouncesRouterTests {
         #expect(queryDict["limit"] == "25")
         #expect(queryDict["page"] == "next")
         #expect(queryDict["term"] == "test")
-        
+
         let match: Mailgun.Suppressions.Bounces.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         #expect(match.list?.domain == (try .init("test.domain.com")))
@@ -106,12 +106,12 @@ struct BouncesRouterTests {
             error: "Test error",
             createdAt: "2024-12-27"
         )
-        
+
         let api: Mailgun.Suppressions.Bounces.API = .create(domain: try .init("test.domain.com"), request: request)
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/bounces")
-        
+
         let match: Mailgun.Suppressions.Bounces.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.create))
         #expect(match.create?.domain == (try .init("test.domain.com")))
@@ -126,10 +126,10 @@ struct BouncesRouterTests {
         let router: Mailgun.Suppressions.Bounces.API.Router = .init()
 
         let api: Mailgun.Suppressions.Bounces.API = .deleteAll(domain: try .init("test.domain.com"))
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/bounces")
-        
+
         let match: Mailgun.Suppressions.Bounces.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteAll))
         #expect(match.deleteAll == (try .init("test.domain.com")))

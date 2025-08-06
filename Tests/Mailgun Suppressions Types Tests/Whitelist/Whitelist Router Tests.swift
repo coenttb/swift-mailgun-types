@@ -6,10 +6,10 @@
 //
 
 import DependenciesTestSupport
-import Testing
-import EmailAddress
 import Domain
+import EmailAddress
 @testable import Mailgun_Suppressions_Types
+import Testing
 
 @Suite(
     "Allowlist Router Tests"
@@ -22,10 +22,10 @@ struct AllowlistRouterTests {
 
         let testData = Data("test".utf8)
         let api: Mailgun.Suppressions.Allowlist.API = .importList(domain: try .init("test.domain.com"), request: testData)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/Allowlists/import")
-        
+
         // Note: Import endpoints use multipart form data which doesn't support round-trip testing
         // due to the complex nature of multipart boundary generation and Data encoding
     }
@@ -38,10 +38,10 @@ struct AllowlistRouterTests {
             domain: try .init("test.domain.com"),
             value: "example.com"
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/Allowlists/example.com")
-        
+
         let match: Mailgun.Suppressions.Allowlist.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
         #expect(match.get?.domain == (try .init("test.domain.com")))

@@ -6,12 +6,9 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum Webhooks {}
 }
-
 
 extension Mailgun.Webhooks {
     public struct Webhook: Sendable, Codable, Equatable {

@@ -21,7 +21,7 @@ extension Mailgun.Keys {
 extension Mailgun.Keys.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Keys.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Keys.API.list)) {
@@ -29,21 +29,21 @@ extension Mailgun.Keys.API {
                     Path { "v1" }
                     Path.keys
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Keys.API.create)) {
                     Method.post
                     Path { "v1" }
                     Path.keys
                     Body(.form(Mailgun.Keys.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Keys.API.delete)) {
                     Method.delete
                     Path { "v1" }
                     Path.keys
                     Path { Parse(.string) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Keys.API.addPublicKey)) {
                     Method.post
                     Path { "v1" }
@@ -61,7 +61,7 @@ extension Path<PathBuilder.Component<String>> {
     public static let keys: Path<PathBuilder.Component<String>> = Path {
         "keys"
     }
-    
+
     nonisolated(unsafe)
     public static let `public`: Path<PathBuilder.Component<String>> = Path {
         "public"

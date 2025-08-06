@@ -21,7 +21,7 @@ extension Mailgun.CustomMessageLimit {
 extension Mailgun.CustomMessageLimit.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.CustomMessageLimit.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.getMonthly)) {
@@ -32,7 +32,7 @@ extension Mailgun.CustomMessageLimit.API {
                     Path.custom
                     Path.monthly
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.setMonthly)) {
                     Method.put
                     Path { "v5" }
@@ -46,7 +46,7 @@ extension Mailgun.CustomMessageLimit.API {
                         }
                     }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.deleteMonthly)) {
                     Method.delete
                     Path { "v5" }
@@ -55,7 +55,7 @@ extension Mailgun.CustomMessageLimit.API {
                     Path.custom
                     Path.monthly
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.enableAccount)) {
                     Method.put
                     Path { "v5" }
@@ -74,22 +74,22 @@ extension Path<PathBuilder.Component<String>> {
     public static let accounts: Path<PathBuilder.Component<String>> = Path {
         "accounts"
     }
-    
+
     nonisolated(unsafe)
     public static let limit: Path<PathBuilder.Component<String>> = Path {
         "limit"
     }
-    
+
     nonisolated(unsafe)
     public static let custom: Path<PathBuilder.Component<String>> = Path {
         "custom"
     }
-    
+
     nonisolated(unsafe)
     public static let monthly: Path<PathBuilder.Component<String>> = Path {
         "monthly"
     }
-    
+
     nonisolated(unsafe)
     public static let enable: Path<PathBuilder.Component<String>> = Path {
         "enable"

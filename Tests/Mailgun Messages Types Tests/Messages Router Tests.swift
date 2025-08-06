@@ -6,8 +6,8 @@
 //
 
 import DependenciesTestSupport
-import Testing
 @testable import Mailgun_Messages_Types
+import Testing
 
 @Suite("Messages Router Tests")
 struct MessagesRouterTests {
@@ -29,10 +29,10 @@ struct MessagesRouterTests {
         )
 
         let api: Mailgun.Messages.API = .send(domain: try .init("test.domain.com"), request: sendRequest)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/messages")
-        
+
         let match: Mailgun.Messages.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.send))
         #expect(match.send?.domain == (try .init("test.domain.com")))
@@ -59,10 +59,10 @@ struct MessagesRouterTests {
         )
 
         let api: Mailgun.Messages.API = .sendMime(domain: try .init("test.domain.com"), request: mimeRequest)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/messages.mime")
-        
+
         let match: Mailgun.Messages.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.sendMime))
         #expect(match.sendMime?.domain == (try .init("test.domain.com")))
@@ -80,10 +80,10 @@ struct MessagesRouterTests {
             domain: try .init("test.domain.com"),
             storageKey: "message123"
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/domains/test.domain.com/messages/message123")
-        
+
         let match: Mailgun.Messages.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.retrieve))
         #expect(match.retrieve?.domain == (try .init("test.domain.com")))
@@ -95,10 +95,10 @@ struct MessagesRouterTests {
         let router: Mailgun.Messages.API.Router = .init()
 
         let api: Mailgun.Messages.API = .queueStatus(domain: try .init("test.domain.com"))
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/domains/test.domain.com/sending_queues")
-        
+
         let match: Mailgun.Messages.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.queueStatus))
         #expect(match.queueStatus == (try .init("test.domain.com")))
@@ -109,10 +109,10 @@ struct MessagesRouterTests {
         let router: Mailgun.Messages.API.Router = .init()
 
         let api: Mailgun.Messages.API = .deleteScheduled(domain: try .init("test.domain.com"))
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/envelopes")
-        
+
         let match: Mailgun.Messages.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteScheduled))
         #expect(match.deleteScheduled == (try .init("test.domain.com")))

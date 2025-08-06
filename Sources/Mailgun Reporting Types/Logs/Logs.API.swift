@@ -19,9 +19,9 @@ extension Mailgun.Reporting.Logs {
 
 extension Mailgun.Reporting.Logs.API {
     public struct Router: ParserPrinter, Sendable {
-        
+
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Reporting.Logs.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Reporting.Logs.API.analytics)) {

@@ -25,7 +25,7 @@ extension Mailgun.Reporting.Logs.Analytics {
         public let filter: Filter?
         public let include: [Include]?
         public let page: Page?
-        
+
         public init(
             action: String? = nil,
             groupBy: String? = nil,
@@ -43,7 +43,7 @@ extension Mailgun.Reporting.Logs.Analytics {
             self.include = include
             self.page = page
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case action
             case groupBy = "group_by"
@@ -54,11 +54,11 @@ extension Mailgun.Reporting.Logs.Analytics {
             case page
         }
     }
-    
+
     public struct Filter: Sendable, Codable, Equatable {
         public let and: [Condition]?
         public let or: [Condition]?
-        
+
         public init(
             and: [Condition]? = nil,
             or: [Condition]? = nil
@@ -67,12 +67,12 @@ extension Mailgun.Reporting.Logs.Analytics {
             self.or = or
         }
     }
-    
+
     public struct Condition: Sendable, Codable, Equatable {
         public let field: String
         public let `operator`: Operator
         public let value: Value
-        
+
         public init(
             field: String,
             operator: Operator,
@@ -83,7 +83,7 @@ extension Mailgun.Reporting.Logs.Analytics {
             self.value = value
         }
     }
-    
+
     public enum Operator: String, Sendable, Codable, Equatable {
         case equals = "="
         case notEquals = "!="
@@ -96,17 +96,17 @@ extension Mailgun.Reporting.Logs.Analytics {
         case startsWith = "starts_with"
         case endsWith = "ends_with"
     }
-    
+
     public enum Value: Sendable, Codable, Equatable {
         case string(String)
         case int(Int)
         case double(Double)
         case bool(Bool)
         case array([String])
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
-            
+
             if let stringValue = try? container.decode(String.self) {
                 self = .string(stringValue)
             } else if let intValue = try? container.decode(Int.self) {
@@ -124,7 +124,7 @@ extension Mailgun.Reporting.Logs.Analytics {
                 )
             }
         }
-        
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             switch self {
@@ -141,18 +141,18 @@ extension Mailgun.Reporting.Logs.Analytics {
             }
         }
     }
-    
+
     public enum Include: String, Sendable, Codable, Equatable {
         case actions
         case total
         case resolution
     }
-    
+
     public struct Page: Sendable, Codable, Equatable {
         public let size: Int?
         public let number: Int?
         public let sort: String?
-        
+
         public init(
             size: Int? = nil,
             number: Int? = nil,
@@ -163,11 +163,11 @@ extension Mailgun.Reporting.Logs.Analytics {
             self.sort = sort
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let data: [LogEntry]?
         public let meta: Meta?
-        
+
         public struct LogEntry: Sendable, Decodable, Equatable {
             public let timestamp: Date?
             public let action: String?
@@ -175,16 +175,16 @@ extension Mailgun.Reporting.Logs.Analytics {
             // Attributes would contain arbitrary JSON, simplified for now
             // public let attributes: [String: AnyCodable]?
         }
-        
+
         public struct Meta: Sendable, Decodable, Equatable {
             public let total: Int?
             public let page: PageInfo?
-            
+
             public struct PageInfo: Sendable, Decodable, Equatable {
                 public let size: Int?
                 public let number: Int?
                 public let totalPages: Int?
-                
+
                 private enum CodingKeys: String, CodingKey {
                     case size
                     case number
@@ -194,4 +194,3 @@ extension Mailgun.Reporting.Logs.Analytics {
         }
     }
 }
-

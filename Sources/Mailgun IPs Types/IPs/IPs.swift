@@ -6,8 +6,6 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum IPs {}
 }
@@ -21,7 +19,7 @@ extension Mailgun.IPs {
         public let enabled: Bool?
         public let isOnWarmup: Bool?
         public let rdns: String?
-        
+
         public init(
             ip: String,
             dedicated: Bool,
@@ -35,7 +33,7 @@ extension Mailgun.IPs {
             self.isOnWarmup = isOnWarmup
             self.rdns = rdns
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case ip
             case dedicated
@@ -57,7 +55,7 @@ extension Mailgun.IPs.List {
         public let details: [Mailgun.IPs.IP]?
         public let items: [String]
         public let totalCount: Int
-        
+
         public init(
             details: [Mailgun.IPs.IP]? = nil,
             items: [String],
@@ -67,7 +65,7 @@ extension Mailgun.IPs.List {
             self.items = items
             self.totalCount = totalCount
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case details
             case items
@@ -86,7 +84,7 @@ extension Mailgun.IPs.DomainList {
     public struct Response: Sendable, Codable, Equatable {
         public let items: [String]
         public let totalCount: Int
-        
+
         public init(
             items: [String],
             totalCount: Int
@@ -94,7 +92,7 @@ extension Mailgun.IPs.DomainList {
             self.items = items
             self.totalCount = totalCount
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case items
             case totalCount = "total_count"
@@ -111,15 +109,15 @@ extension Mailgun.IPs {
 extension Mailgun.IPs.AssignDomain {
     public struct Request: Sendable, Codable, Equatable {
         public let domain: String
-        
+
         public init(domain: String) {
             self.domain = domain
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -135,19 +133,19 @@ extension Mailgun.IPs {
 extension Mailgun.IPs.IPBand {
     public struct Request: Sendable, Codable, Equatable {
         public let ipBand: String
-        
+
         public init(ipBand: String) {
             self.ipBand = ipBand
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case ipBand = "ip_band"
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -163,16 +161,16 @@ extension Mailgun.IPs {
 extension Mailgun.IPs.RequestNew {
     public struct Request: Sendable, Codable, Equatable {
         public let count: Int
-        
+
         public init(count: Int) {
             self.count = count
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let requested: Int?
         public let allowed: Allowed?
-        
+
         public init(
             requested: Int? = nil,
             allowed: Allowed? = nil
@@ -180,11 +178,11 @@ extension Mailgun.IPs.RequestNew {
             self.requested = requested
             self.allowed = allowed
         }
-        
+
         public struct Allowed: Sendable, Codable, Equatable {
             public let dedicated: Int
             public let shared: Int
-            
+
             public init(
                 dedicated: Int,
                 shared: Int
@@ -205,7 +203,7 @@ extension Mailgun.IPs {
 extension Mailgun.IPs.Delete {
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }

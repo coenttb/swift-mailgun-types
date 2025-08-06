@@ -7,12 +7,9 @@
 
 import EmailAddress
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum Messages {}
 }
-
 
 extension Mailgun.Messages {
     public enum Send {}
@@ -53,7 +50,7 @@ extension Mailgun.Messages.Send {
         public var headers: [String: String]?
         public let variables: [String: String]?
         public let recipientVariables: String?
-        
+
         public enum CodingKeys: String, CodingKey {
             case from
             case to
@@ -198,7 +195,7 @@ extension Mailgun.Messages.Send {
             public let headers: [String: String]?
             public let variables: [String: String]?
             public let recipientVariables: String?
-            
+
             public enum CodingKeys: String, CodingKey {
                 case to
                 case message

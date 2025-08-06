@@ -6,12 +6,9 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum Templates {}
 }
-
 
 extension Mailgun.Templates {
     public struct Template: Sendable, Codable, Equatable {

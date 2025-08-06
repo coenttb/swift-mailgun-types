@@ -6,8 +6,6 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum IPAddressWarmup {}
 }
@@ -25,7 +23,7 @@ extension Mailgun.IPAddressWarmup {
         public let volumeDailyCapacity: Int?
         public let volumeCurrentDaily: Int?
         public let status: Status?
-        
+
         public init(
             ip: String,
             enabled: Bool,
@@ -47,7 +45,7 @@ extension Mailgun.IPAddressWarmup {
             self.volumeCurrentDaily = volumeCurrentDaily
             self.status = status
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case ip
             case enabled
@@ -59,7 +57,7 @@ extension Mailgun.IPAddressWarmup {
             case volumeCurrentDaily = "volume_current_daily"
             case status
         }
-        
+
         public enum Status: String, Sendable, Codable, Equatable {
             case active = "active"
             case scheduled = "scheduled"
@@ -79,7 +77,7 @@ extension Mailgun.IPAddressWarmup.List {
     public struct Response: Sendable, Codable, Equatable {
         public let items: [Mailgun.IPAddressWarmup.IPWarmup]
         public let paging: Paging?
-        
+
         public init(
             items: [Mailgun.IPAddressWarmup.IPWarmup],
             paging: Paging? = nil
@@ -87,13 +85,13 @@ extension Mailgun.IPAddressWarmup.List {
             self.items = items
             self.paging = paging
         }
-        
+
         public struct Paging: Sendable, Codable, Equatable {
             public let previous: String
             public let first: String
             public let next: String
             public let last: String
-            
+
             public init(
                 previous: String,
                 first: String,
@@ -119,7 +117,7 @@ extension Mailgun.IPAddressWarmup.Create {
     public struct Request: Sendable, Codable, Equatable {
         public let enabled: Bool?
         public let volumeDailyCapacity: Int?
-        
+
         public init(
             enabled: Bool? = nil,
             volumeDailyCapacity: Int? = nil
@@ -127,17 +125,17 @@ extension Mailgun.IPAddressWarmup.Create {
             self.enabled = enabled
             self.volumeDailyCapacity = volumeDailyCapacity
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case enabled
             case volumeDailyCapacity = "volume_daily_capacity"
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
         public let ip: String
-        
+
         public init(
             message: String,
             ip: String
@@ -157,7 +155,7 @@ extension Mailgun.IPAddressWarmup {
 extension Mailgun.IPAddressWarmup.Delete {
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }

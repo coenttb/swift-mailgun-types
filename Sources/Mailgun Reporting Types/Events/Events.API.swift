@@ -7,8 +7,6 @@
 
 import Mailgun_Types_Shared
 import RFC_2822
-import Mailgun_Types_Shared
-
 extension Mailgun.Reporting.Events {
     @CasePathable
     @dynamicMemberLookup

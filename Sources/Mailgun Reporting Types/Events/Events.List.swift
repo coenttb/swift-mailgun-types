@@ -87,7 +87,7 @@ extension Mailgun.Reporting.Events.List {
         public enum Ascending: String, Sendable, Codable, Equatable {
             case yes
             case no
-            
+
         }
     }
 }

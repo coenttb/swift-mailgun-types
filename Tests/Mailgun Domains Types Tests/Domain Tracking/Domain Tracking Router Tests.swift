@@ -6,9 +6,9 @@
 //
 
 import DependenciesTestSupport
-import Testing
-@testable import Mailgun_Domains_Types
 import Domain
+@testable import Mailgun_Domains_Types
+import Testing
 
 @Suite("Domain Tracking Router Tests")
 struct DomainTrackingRouterTests {
@@ -16,12 +16,12 @@ struct DomainTrackingRouterTests {
     func testGetTrackingURL() throws {
         let router: Mailgun.Domains.Domains.Tracking.API.Router = .init()
         let domain = try Domain("example.com")
-        
+
         let api: Mailgun.Domains.Domains.Tracking.API = .get(domain: domain)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/domains/example.com/tracking")
-        
+
         let match: Mailgun.Domains.Domains.Tracking.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
         #expect(match.get == domain)

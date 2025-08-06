@@ -242,6 +242,6 @@ extension Path<PathBuilder.Component<String>> {
     nonisolated(unsafe) public static let members = Path {
         "members"
     }
-    
+
     nonisolated(unsafe) package static let pages = Path { "pages" }
 }
