@@ -53,6 +53,42 @@ extension Mailgun.Messages.Send {
         public var headers: [String: String]?
         public let variables: [String: String]?
         public let recipientVariables: String?
+        
+        public enum CodingKeys: String, CodingKey {
+            case from
+            case to
+            case subject
+            case html
+            case text
+            case cc
+            case bcc
+            case ampHtml = "amp-html"
+            case template
+            case templateVersion = "t:version"
+            case templateText = "t:text"
+            case templateVariables = "t:variables"
+            case attachments = "attachment"
+            case inline
+            case tags = "o:tag"
+            case dkim = "o:dkim"
+            case secondaryDkim = "o:secondary-dkim"
+            case secondaryDkimPublic = "o:secondary-dkim-public"
+            case deliveryTime = "o:deliverytime"
+            case deliveryTimeOptimizePeriod = "o:deliverytime-optimize-period"
+            case timeZoneLocalize = "o:time-zone-localize"
+            case testMode = "o:testmode"
+            case tracking = "o:tracking"
+            case trackingClicks = "o:tracking-clicks"
+            case trackingOpens = "o:tracking-opens"
+            case requireTls = "o:require-tls"
+            case skipVerification = "o:skip-verification"
+            case sendingIp = "o:sending-ip"
+            case sendingIpPool = "o:sending-ip-pool"
+            case trackingPixelLocationTop = "o:tracking-pixel-location-top"
+            case headers = "h"
+            case variables = "v"
+            case recipientVariables = "recipient-variables"
+        }
 
         public init(
             from: EmailAddress,
@@ -162,6 +198,34 @@ extension Mailgun.Messages.Send {
             public let headers: [String: String]?
             public let variables: [String: String]?
             public let recipientVariables: String?
+            
+            public enum CodingKeys: String, CodingKey {
+                case to
+                case message
+                case template
+                case templateVersion = "t:version"
+                case templateText = "t:text"
+                case templateVariables = "t:variables"
+                case tags = "o:tag"
+                case dkim = "o:dkim"
+                case secondaryDkim = "o:secondary-dkim"
+                case secondaryDkimPublic = "o:secondary-dkim-public"
+                case deliveryTime = "o:deliverytime"
+                case deliveryTimeOptimizePeriod = "o:deliverytime-optimize-period"
+                case timeZoneLocalize = "o:time-zone-localize"
+                case testMode = "o:testmode"
+                case tracking = "o:tracking"
+                case trackingClicks = "o:tracking-clicks"
+                case trackingOpens = "o:tracking-opens"
+                case requireTls = "o:require-tls"
+                case skipVerification = "o:skip-verification"
+                case sendingIp = "o:sending-ip"
+                case sendingIpPool = "o:sending-ip-pool"
+                case trackingPixelLocationTop = "o:tracking-pixel-location-top"
+                case headers = "h"
+                case variables = "v"
+                case recipientVariables = "recipient-variables"
+            }
 
             public init(
                 to: [EmailAddress],
