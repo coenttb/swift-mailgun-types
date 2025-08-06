@@ -16,7 +16,7 @@ extension Mailgun.Routes {
         case get(id: String)
         case update(id: String, request: Mailgun.Routes.Update.Request)
         case delete(id: String)
-        case match(recipient: String)
+        case match(address: String)
     }
 }
 
@@ -75,7 +75,7 @@ extension Mailgun.Routes.API {
                     Path.routes
                     Path.match
                     Query {
-                        Field("recipient") { Parse(.string) }
+                        Field("address") { Parse(.string) }
                     }
                 }
             }

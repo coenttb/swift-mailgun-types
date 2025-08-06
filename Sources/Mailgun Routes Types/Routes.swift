@@ -52,13 +52,13 @@ extension Mailgun.Routes {
 
 extension Mailgun.Routes.Create {
     public struct Request: Sendable, Codable, Equatable {
-        public let priority: Int
+        public let priority: Int?
         public let description: String
         public let expression: String
         public let action: [String]
 
         public init(
-            priority: Int,
+            priority: Int? = nil,
             description: String,
             expression: String,
             action: [String]
@@ -89,6 +89,19 @@ extension Mailgun.Routes {
 }
 
 extension Mailgun.Routes.List {
+    public struct Request: Sendable, Codable, Equatable {
+        public let skip: Int?
+        public let limit: Int?
+        
+        public init(
+            skip: Int? = nil,
+            limit: Int? = nil
+        ) {
+            self.skip = skip
+            self.limit = limit
+        }
+    }
+    
     public struct Response: Sendable, Decodable, Equatable {
         public let totalCount: Int
         public let items: [Mailgun.Routes.Route]
@@ -109,22 +122,39 @@ extension Mailgun.Routes.List {
 }
 
 extension Mailgun.Routes {
+    public enum Get {}
+}
+
+extension Mailgun.Routes.Get {
+    public struct Response: Sendable, Decodable, Equatable {
+        public let route: Mailgun.Routes.Route
+        
+        public init(route: Mailgun.Routes.Route) {
+            self.route = route
+        }
+    }
+}
+
+extension Mailgun.Routes {
     public enum Update {}
 }
 
 extension Mailgun.Routes.Update {
     public struct Request: Sendable, Codable, Equatable {
+        public let id: String?
         public let priority: Int?
         public let description: String?
         public let expression: String?
         public let action: [String]?
 
         public init(
+            id: String? = nil,
             priority: Int? = nil,
             description: String? = nil,
             expression: String? = nil,
             action: [String]? = nil
         ) {
+            self.id = id
             self.priority = priority
             self.description = description
             self.expression = expression
@@ -134,14 +164,14 @@ extension Mailgun.Routes.Update {
 
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
-        public let id: String?
+        public let route: Mailgun.Routes.Route
 
         public init(
             message: String,
-            id: String? = nil
+            route: Mailgun.Routes.Route
         ) {
             self.message = message
-            self.id = id
+            self.route = route
         }
     }
 }
@@ -153,11 +183,11 @@ extension Mailgun.Routes {
 extension Mailgun.Routes.Delete {
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
-        public let id: String?
+        public let id: String
 
         public init(
             message: String,
-            id: String? = nil
+            id: String
         ) {
             self.message = message
             self.id = id
@@ -171,22 +201,19 @@ extension Mailgun.Routes {
 
 extension Mailgun.Routes.Match {
     public struct Request: Sendable, Codable, Equatable {
-        public let recipient: String
+        public let address: String
 
-        public init(recipient: String) {
-            self.recipient = recipient
+        public init(address: String) {
+            self.address = address
         }
     }
 
     public struct Response: Sendable, Decodable, Equatable {
-        public let message: String?
-        public let route: Mailgun.Routes.Route?
+        public let route: Mailgun.Routes.Route
 
         public init(
-            message: String? = nil,
-            route: Mailgun.Routes.Route? = nil
+            route: Mailgun.Routes.Route
         ) {
-            self.message = message
             self.route = route
         }
     }
