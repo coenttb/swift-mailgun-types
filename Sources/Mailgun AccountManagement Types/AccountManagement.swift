@@ -93,14 +93,22 @@ extension Mailgun.AccountManagement.Sandbox {
     }
     
     public struct AuthRecipientsList: Sendable, Decodable, Equatable {
-        public let authRecipients: [EmailAddress]
+        public let limit: Int?
+        public let recipients: [RecipientInfo]
         
-        public init(authRecipients: [EmailAddress]) {
-            self.authRecipients = authRecipients
+        public init(limit: Int? = nil, recipients: [RecipientInfo]) {
+            self.limit = limit
+            self.recipients = recipients
         }
         
-        private enum CodingKeys: String, CodingKey {
-            case authRecipients = "auth_recipients"
+        public struct RecipientInfo: Sendable, Decodable, Equatable {
+            public let activated: Bool
+            public let email: EmailAddress
+            
+            public init(activated: Bool, email: EmailAddress) {
+                self.activated = activated
+                self.email = email
+            }
         }
     }
     
