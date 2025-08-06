@@ -11,6 +11,8 @@ extension Mailgun.Domains {
     public enum Domains {}
 }
 
+// MARK: - Core Domain Types
+
 extension Mailgun.Domains.Domains {
     public struct DomainInfo: Sendable, Codable, Equatable {
         public let name: String
@@ -90,7 +92,39 @@ extension Mailgun.Domains.Domains {
         case sandbox = "sandbox"
         case custom = "custom"
     }
+    
+    public struct DnsRecord: Sendable, Codable, Equatable {
+        public let recordType: String
+        public let valid: String
+        public let name: String
+        public let value: String
+        public let priority: String?
+        
+        public init(
+            recordType: String,
+            valid: String,
+            name: String,
+            value: String,
+            priority: String? = nil
+        ) {
+            self.recordType = recordType
+            self.valid = valid
+            self.name = name
+            self.value = value
+            self.priority = priority
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case recordType = "record_type"
+            case valid
+            case name
+            case value
+            case priority
+        }
+    }
 }
+
+// MARK: - List Domains
 
 extension Mailgun.Domains.Domains {
     public enum List {}
@@ -134,6 +168,8 @@ extension Mailgun.Domains.Domains.List {
         }
     }
 }
+
+// MARK: - Create Domain
 
 extension Mailgun.Domains.Domains {
     public enum Create {}
@@ -188,14 +224,14 @@ extension Mailgun.Domains.Domains.Create {
     
     public struct Response: Sendable, Codable, Equatable {
         public let domain: Mailgun.Domains.Domains.DomainInfo
-        public let receivingDnsRecords: [DnsRecord]
-        public let sendingDnsRecords: [DnsRecord]
+        public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
+        public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
         public let message: String
         
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
-            receivingDnsRecords: [DnsRecord],
-            sendingDnsRecords: [DnsRecord],
+            receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord],
+            sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord],
             message: String
         ) {
             self.domain = domain
@@ -211,37 +247,9 @@ extension Mailgun.Domains.Domains.Create {
             case message
         }
     }
-    
-    public struct DnsRecord: Sendable, Codable, Equatable {
-        public let recordType: String
-        public let valid: String
-        public let name: String
-        public let value: String
-        public let priority: String?
-        
-        public init(
-            recordType: String,
-            valid: String,
-            name: String,
-            value: String,
-            priority: String? = nil
-        ) {
-            self.recordType = recordType
-            self.valid = valid
-            self.name = name
-            self.value = value
-            self.priority = priority
-        }
-        
-        private enum CodingKeys: String, CodingKey {
-            case recordType = "record_type"
-            case valid
-            case name
-            case value
-            case priority
-        }
-    }
 }
+
+// MARK: - Get Domain
 
 extension Mailgun.Domains.Domains {
     public enum Get {}
@@ -250,13 +258,13 @@ extension Mailgun.Domains.Domains {
 extension Mailgun.Domains.Domains.Get {
     public struct Response: Sendable, Codable, Equatable {
         public let domain: Mailgun.Domains.Domains.DomainInfo
-        public let receivingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord]
-        public let sendingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord]
+        public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
+        public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
         
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
-            receivingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord],
-            sendingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord]
+            receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord],
+            sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
         ) {
             self.domain = domain
             self.receivingDnsRecords = receivingDnsRecords
@@ -270,6 +278,8 @@ extension Mailgun.Domains.Domains.Get {
         }
     }
 }
+
+// MARK: - Update Domain
 
 extension Mailgun.Domains.Domains {
     public enum Update {}
@@ -300,14 +310,14 @@ extension Mailgun.Domains.Domains.Update {
     
     public struct Response: Sendable, Codable, Equatable {
         public let domain: Mailgun.Domains.Domains.DomainInfo
-        public let receivingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord]
-        public let sendingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord]
+        public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
+        public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
         public let message: String
         
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
-            receivingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord],
-            sendingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord],
+            receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord],
+            sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord],
             message: String
         ) {
             self.domain = domain
@@ -325,6 +335,8 @@ extension Mailgun.Domains.Domains.Update {
     }
 }
 
+// MARK: - Delete Domain
+
 extension Mailgun.Domains.Domains {
     public enum Delete {}
 }
@@ -339,6 +351,8 @@ extension Mailgun.Domains.Domains.Delete {
     }
 }
 
+// MARK: - Verify Domain
+
 extension Mailgun.Domains.Domains {
     public enum Verify {}
 }
@@ -346,14 +360,14 @@ extension Mailgun.Domains.Domains {
 extension Mailgun.Domains.Domains.Verify {
     public struct Response: Sendable, Codable, Equatable {
         public let domain: Mailgun.Domains.Domains.DomainInfo
-        public let receivingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord]
-        public let sendingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord]
+        public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
+        public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]
         public let message: String
         
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
-            receivingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord],
-            sendingDnsRecords: [Mailgun.Domains.Domains.Create.DnsRecord],
+            receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord],
+            sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord],
             message: String
         ) {
             self.domain = domain

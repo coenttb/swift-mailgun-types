@@ -11,6 +11,8 @@ extension Mailgun.Domains {
     public enum DomainKeys {}
 }
 
+// MARK: - Core Types
+
 extension Mailgun.Domains.DomainKeys {
     public struct Key: Sendable, Codable, Equatable {
         public let signingDomain: String
@@ -41,7 +43,28 @@ extension Mailgun.Domains.DomainKeys {
             case createdAt = "created_at"
         }
     }
+    
+    public struct Paging: Sendable, Codable, Equatable {
+        public let first: String?
+        public let last: String?
+        public let next: String?
+        public let previous: String?
+        
+        public init(
+            first: String? = nil,
+            last: String? = nil,
+            next: String? = nil,
+            previous: String? = nil
+        ) {
+            self.first = first
+            self.last = last
+            self.next = next
+            self.previous = previous
+        }
+    }
 }
+
+// MARK: - List Keys
 
 extension Mailgun.Domains.DomainKeys {
     public enum List {}
@@ -76,36 +99,19 @@ extension Mailgun.Domains.DomainKeys.List {
     
     public struct Response: Sendable, Codable, Equatable {
         public let items: [Mailgun.Domains.DomainKeys.Key]
-        public let paging: Paging?
+        public let paging: Mailgun.Domains.DomainKeys.Paging?
         
         public init(
             items: [Mailgun.Domains.DomainKeys.Key],
-            paging: Paging? = nil
+            paging: Mailgun.Domains.DomainKeys.Paging? = nil
         ) {
             self.items = items
             self.paging = paging
         }
     }
-    
-    public struct Paging: Sendable, Codable, Equatable {
-        public let first: String?
-        public let last: String?
-        public let next: String?
-        public let previous: String?
-        
-        public init(
-            first: String? = nil,
-            last: String? = nil,
-            next: String? = nil,
-            previous: String? = nil
-        ) {
-            self.first = first
-            self.last = last
-            self.next = next
-            self.previous = previous
-        }
-    }
 }
+
+// MARK: - Create Key
 
 extension Mailgun.Domains.DomainKeys {
     public enum Create {}
@@ -152,6 +158,8 @@ extension Mailgun.Domains.DomainKeys.Create {
     }
 }
 
+// MARK: - Delete Key
+
 extension Mailgun.Domains.DomainKeys {
     public enum Delete {}
 }
@@ -184,6 +192,8 @@ extension Mailgun.Domains.DomainKeys.Delete {
     }
 }
 
+// MARK: - Activate Key
+
 extension Mailgun.Domains.DomainKeys {
     public enum Activate {}
 }
@@ -197,6 +207,8 @@ extension Mailgun.Domains.DomainKeys.Activate {
         }
     }
 }
+
+// MARK: - List Domain Keys
 
 extension Mailgun.Domains.DomainKeys {
     public enum DomainKeysList {}
@@ -222,6 +234,8 @@ extension Mailgun.Domains.DomainKeys.DomainKeysList {
     }
 }
 
+// MARK: - Deactivate Key
+
 extension Mailgun.Domains.DomainKeys {
     public enum Deactivate {}
 }
@@ -235,6 +249,8 @@ extension Mailgun.Domains.DomainKeys.Deactivate {
         }
     }
 }
+
+// MARK: - Set DKIM Authority
 
 extension Mailgun.Domains.DomainKeys {
     public enum SetDkimAuthority {}
@@ -261,6 +277,8 @@ extension Mailgun.Domains.DomainKeys.SetDkimAuthority {
         }
     }
 }
+
+// MARK: - Set DKIM Selector
 
 extension Mailgun.Domains.DomainKeys {
     public enum SetDkimSelector {}
