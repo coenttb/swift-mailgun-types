@@ -1,0 +1,98 @@
+//
+//  File.swift
+//  coenttb-mailgun
+//
+//  Created by Coen ten Thije Boonkkamp on 24/12/2024.
+//
+
+import Mailgun_Types_Shared
+
+extension Mailgun.CustomMessageLimit {
+    @CasePathable
+    @dynamicMemberLookup
+    public enum API: Equatable, Sendable {
+        case getMonthly
+        case setMonthly(request: Mailgun.CustomMessageLimit.Monthly.SetRequest)
+        case deleteMonthly
+        case enableAccount
+    }
+}
+
+extension Mailgun.CustomMessageLimit.API {
+    public struct Router: ParserPrinter, Sendable {
+        public init() {}
+        
+        public var body: some URLRouting.Router<Mailgun.CustomMessageLimit.API> {
+            OneOf {
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.getMonthly)) {
+                    Method.get
+                    Path { "v5" }
+                    Path.accounts
+                    Path.limit
+                    Path.custom
+                    Path.monthly
+                }
+                
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.setMonthly)) {
+                    Method.put
+                    Path { "v5" }
+                    Path.accounts
+                    Path.limit
+                    Path.custom
+                    Path.monthly
+                    Body(.form(Mailgun.CustomMessageLimit.Monthly.SetRequest.self, decoder: .mailgun, encoder: .mailgun))
+                }
+                
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.deleteMonthly)) {
+                    Method.delete
+                    Path { "v5" }
+                    Path.accounts
+                    Path.limit
+                    Path.custom
+                    Path.monthly
+                }
+                
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.enableAccount)) {
+                    Method.put
+                    Path { "v5" }
+                    Path.accounts
+                    Path.limit
+                    Path.custom
+                    Path.enable
+                }
+            }
+        }
+    }
+}
+
+extension Path<PathBuilder.Component<String>> {
+    nonisolated(unsafe)
+    public static let v5: Path<PathBuilder.Component<String>> = Path {
+        "v5"
+    }
+    
+    nonisolated(unsafe)
+    public static let accounts: Path<PathBuilder.Component<String>> = Path {
+        "accounts"
+    }
+    
+    nonisolated(unsafe)
+    public static let limit: Path<PathBuilder.Component<String>> = Path {
+        "limit"
+    }
+    
+    nonisolated(unsafe)
+    public static let custom: Path<PathBuilder.Component<String>> = Path {
+        "custom"
+    }
+    
+    nonisolated(unsafe)
+    public static let monthly: Path<PathBuilder.Component<String>> = Path {
+        "monthly"
+    }
+    
+    nonisolated(unsafe)
+    public static let enable: Path<PathBuilder.Component<String>> = Path {
+        "enable"
+    }
+}

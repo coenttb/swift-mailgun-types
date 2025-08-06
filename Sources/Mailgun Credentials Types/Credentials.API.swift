@@ -1,0 +1,101 @@
+//
+//  File.swift
+//  coenttb-mailgun
+//
+//  Created by Coen ten Thije Boonkkamp on 24/12/2024.
+//
+
+import Mailgun_Types_Shared
+
+extension Mailgun.Credentials {
+    @CasePathable
+    @dynamicMemberLookup
+    public enum API: Equatable, Sendable {
+        case list(domain: Domain)
+        case create(domain: Domain, request: Mailgun.Credentials.Create.Request)
+        case deleteAll(domain: Domain)
+        case update(domain: Domain, login: String, request: Mailgun.Credentials.Update.Request)
+        case delete(domain: Domain, login: String)
+        case updateMailbox(domain: Domain, login: String, request: Mailgun.Credentials.Mailbox.Update.Request)
+    }
+}
+
+extension Mailgun.Credentials.API {
+    public struct Router: ParserPrinter, Sendable {
+        public init() {}
+        
+        public var body: some URLRouting.Router<Mailgun.Credentials.API> {
+            OneOf {
+                URLRouting.Route(.case(Mailgun.Credentials.API.list)) {
+                    Method.get
+                    Path { "v3" }
+                    Path.domains
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.credentials
+                }
+                
+                URLRouting.Route(.case(Mailgun.Credentials.API.create)) {
+                    Method.post
+                    Path { "v3" }
+                    Path.domains
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.credentials
+                    Body(.form(Mailgun.Credentials.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
+                }
+                
+                URLRouting.Route(.case(Mailgun.Credentials.API.deleteAll)) {
+                    Method.delete
+                    Path { "v3" }
+                    Path.domains
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.credentials
+                }
+                
+                URLRouting.Route(.case(Mailgun.Credentials.API.update)) {
+                    Method.put
+                    Path { "v3" }
+                    Path.domains
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.credentials
+                    Path { Parse(.string) }
+                    Body(.form(Mailgun.Credentials.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
+                }
+                
+                URLRouting.Route(.case(Mailgun.Credentials.API.delete)) {
+                    Method.delete
+                    Path { "v3" }
+                    Path.domains
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.credentials
+                    Path { Parse(.string) }
+                }
+                
+                URLRouting.Route(.case(Mailgun.Credentials.API.updateMailbox)) {
+                    Method.put
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.mailboxes
+                    Path { Parse(.string) }
+                    Body(.form(Mailgun.Credentials.Mailbox.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
+                }
+            }
+        }
+    }
+}
+
+extension Path<PathBuilder.Component<String>> {
+    nonisolated(unsafe)
+    public static let credentials: Path<PathBuilder.Component<String>> = Path {
+        "credentials"
+    }
+    
+    nonisolated(unsafe)
+    public static let mailboxes: Path<PathBuilder.Component<String>> = Path {
+        "mailboxes"
+    }
+    
+    nonisolated(unsafe)
+    public static let domains: Path<PathBuilder.Component<String>> = Path {
+        "domains"
+    }
+}
