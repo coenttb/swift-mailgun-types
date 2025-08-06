@@ -7,7 +7,6 @@
 
 import DependenciesTestSupport
 import Testing
-import EmailAddress
 @testable import Mailgun_AccountManagement_Types
 
 @Suite(
@@ -21,7 +20,9 @@ struct AccountManagementRouterTests {
         
         let request = Mailgun.AccountManagement.Update.Request(
             name: "Test Account",
-            timezone: "America/New_York"
+            inactiveSessionTimeout: 3600,
+            absoluteSessionTimeout: 86400,
+            logoutRedirectUrl: "https://example.com/logout"
         )
         
         let api: Mailgun.AccountManagement.API = .updateAccount(request: request)
@@ -32,7 +33,9 @@ struct AccountManagementRouterTests {
         let match: Mailgun.AccountManagement.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.updateAccount))
         #expect(match.updateAccount?.name == "Test Account")
-        #expect(match.updateAccount?.timezone == "America/New_York")
+        #expect(match.updateAccount?.inactiveSessionTimeout == 3600)
+        #expect(match.updateAccount?.absoluteSessionTimeout == 86400)
+        #expect(match.updateAccount?.logoutRedirectUrl == "https://example.com/logout")
     }
     
     @Test("Creates correct URL for getting HTTP signing key")
@@ -78,8 +81,8 @@ struct AccountManagementRouterTests {
     func testAddSandboxAuthRecipientURL() throws {
         let router: Mailgun.AccountManagement.API.Router = .init()
         
-        let email = try EmailAddress("test@example.com")
-        let api: Mailgun.AccountManagement.API = .addSandboxAuthRecipient(email: email)
+        let request = Mailgun.AccountManagement.Sandbox.Auth.Recipients.Add.Request(email: "test@example.com")
+        let api: Mailgun.AccountManagement.API = .addSandboxAuthRecipient(request: request)
         
         let url = router.url(for: api)
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
@@ -91,14 +94,14 @@ struct AccountManagementRouterTests {
         
         let match: Mailgun.AccountManagement.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.addSandboxAuthRecipient))
-        #expect(match.addSandboxAuthRecipient == email)
+        #expect(match.addSandboxAuthRecipient?.email == "test@example.com")
     }
     
     @Test("Creates correct URL for deleting sandbox auth recipient")
     func testDeleteSandboxAuthRecipientURL() throws {
         let router: Mailgun.AccountManagement.API.Router = .init()
         
-        let email = try EmailAddress("test@example.com")
+        let email = "test@example.com"
         let api: Mailgun.AccountManagement.API = .deleteSandboxAuthRecipient(email: email)
         
         let url = router.url(for: api)
@@ -106,7 +109,12 @@ struct AccountManagementRouterTests {
         
         let match: Mailgun.AccountManagement.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteSandboxAuthRecipient))
-        #expect(match.deleteSandboxAuthRecipient == email)
+        
+        if case .deleteSandboxAuthRecipient(let matchedEmail) = match {
+            #expect(matchedEmail == email)
+        } else {
+            Issue.record("Expected deleteSandboxAuthRecipient case")
+        }
     }
     
     @Test("Creates correct URL for resending activation email")
@@ -135,26 +143,30 @@ struct AccountManagementRouterTests {
         #expect(match.is(\.getSAMLOrganization))
     }
     
-    @Test("Creates correct URL for creating SAML organization")
-    func testCreateSAMLOrganizationURL() throws {
+    @Test("Creates correct URL for adding SAML organization")
+    func testAddSAMLOrganizationURL() throws {
         let router: Mailgun.AccountManagement.API.Router = .init()
         
-        let request = Mailgun.AccountManagement.SAML.CreateRequest(
-            name: "Test Organization",
-            entityId: "https://test.example.com",
-            ssoUrl: "https://test.example.com/sso"
+        let request = Mailgun.AccountManagement.SAML.Organization.Add.Request(
+            userId: "test-user-123",
+            domain: "example.com"
         )
         
-        let api: Mailgun.AccountManagement.API = .createSAMLOrganization(request: request)
+        let api: Mailgun.AccountManagement.API = .addSAMLOrganization(request: request)
         
         let url = router.url(for: api)
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        let queryItems = components?.queryItems ?? []
+        let queryDict: [String: String?] = Dictionary(uniqueKeysWithValues: queryItems.map { ($0.name, $0.value) })
+        
         #expect(url.path == "/v5/accounts/saml_org")
+        #expect(queryDict["user_id"] == "test-user-123")
+        #expect(queryDict["domain"] == "example.com")
         
         let match: Mailgun.AccountManagement.API = try router.match(request: try router.request(for: api))
-        #expect(match.is(\.createSAMLOrganization))
-        #expect(match.createSAMLOrganization?.name == "Test Organization")
-        #expect(match.createSAMLOrganization?.entityId == "https://test.example.com")
-        #expect(match.createSAMLOrganization?.ssoUrl == "https://test.example.com/sso")
+        #expect(match.is(\.addSAMLOrganization))
+        #expect(match.addSAMLOrganization?.userId == "test-user-123")
+        #expect(match.addSAMLOrganization?.domain == "example.com")
     }
     
     @Test("Verifies all endpoints use v5 API version")
@@ -165,11 +177,11 @@ struct AccountManagementRouterTests {
         let httpKeyUrl = router.url(for: .getHttpSigningKey)
         let regenerateUrl = router.url(for: .regenerateHttpSigningKey)
         let sandboxListUrl = router.url(for: .getSandboxAuthRecipients)
-        let sandboxAddUrl = router.url(for: .addSandboxAuthRecipient(email: try .init("test@example.com")))
-        let sandboxDeleteUrl = router.url(for: .deleteSandboxAuthRecipient(email: try .init("test@example.com")))
+        let sandboxAddUrl = router.url(for: .addSandboxAuthRecipient(request: .init(email: "test@example.com")))
+        let sandboxDeleteUrl = router.url(for: .deleteSandboxAuthRecipient(email: "test@example.com"))
         let resendUrl = router.url(for: .resendActivationEmail)
         let samlGetUrl = router.url(for: .getSAMLOrganization)
-        let samlCreateUrl = router.url(for: .createSAMLOrganization(request: .init(name: "Test")))
+        let samlCreateUrl = router.url(for: .addSAMLOrganization(request: .init(userId: "test")))
         
         #expect(updateUrl.path.hasPrefix("/v5/"))
         #expect(httpKeyUrl.path.hasPrefix("/v5/"))

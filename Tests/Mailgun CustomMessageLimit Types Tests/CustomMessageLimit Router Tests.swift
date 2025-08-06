@@ -31,11 +31,16 @@ struct CustomMessageLimitRouterTests {
     func testSetMonthlyLimitURL() throws {
         let router: Mailgun.CustomMessageLimit.API.Router = .init()
         
-        let request = Mailgun.CustomMessageLimit.Monthly.SetRequest(limit: 10000)
+        let request = Mailgun.CustomMessageLimit.Monthly.Set.Request(limit: 10000)
         let api: Mailgun.CustomMessageLimit.API = .setMonthly(request: request)
         
         let url = router.url(for: api)
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        let queryItems = components?.queryItems ?? []
+        let queryDict: [String: String?] = Dictionary(uniqueKeysWithValues: queryItems.map { ($0.name, $0.value) })
+        
         #expect(url.path == "/v5/accounts/limit/custom/monthly")
+        #expect(queryDict["limit"] == "10000")
         
         let match: Mailgun.CustomMessageLimit.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.setMonthly))
