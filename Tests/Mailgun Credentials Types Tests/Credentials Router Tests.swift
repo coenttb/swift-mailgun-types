@@ -20,7 +20,8 @@ struct CredentialsRouterTests {
         let router: Mailgun.Credentials.API.Router = .init()
         
         let api: Mailgun.Credentials.API = .list(
-            domain: try .init("test.domain.com")
+            domain: try .init("test.domain.com"),
+            request: nil
         )
         
         let url = router.url(for: api)
@@ -28,7 +29,32 @@ struct CredentialsRouterTests {
         
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
-        #expect(match.list == (try .init("test.domain.com")))
+        #expect(match.list?.domain == (try .init("test.domain.com")))
+        // Request without parameters creates an empty request object
+        #expect(match.list?.request?.skip == nil)
+        #expect(match.list?.request?.limit == nil)
+    }
+    
+    @Test("Creates correct URL for listing credentials with pagination")
+    func testListCredentialsWithPaginationURL() throws {
+        let router: Mailgun.Credentials.API.Router = .init()
+        
+        let request = Mailgun.Credentials.List.Request(skip: 10, limit: 50)
+        let api: Mailgun.Credentials.API = .list(
+            domain: try .init("test.domain.com"),
+            request: request
+        )
+        
+        let url = router.url(for: api)
+        #expect(url.path == "/v3/domains/test.domain.com/credentials")
+        #expect(url.query?.contains("skip=10") == true)
+        #expect(url.query?.contains("limit=50") == true)
+        
+        let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
+        #expect(match.is(\.list))
+        #expect(match.list?.domain == (try .init("test.domain.com")))
+        #expect(match.list?.request?.skip == 10)
+        #expect(match.list?.request?.limit == 50)
     }
     
     @Test("Creates correct URL for creating credentials")
