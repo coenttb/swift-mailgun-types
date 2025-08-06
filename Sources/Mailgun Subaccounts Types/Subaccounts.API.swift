@@ -14,7 +14,7 @@ extension Mailgun.Subaccounts {
         case get(subaccountId: String)
         case list
         case create(request: Mailgun.Subaccounts.Create.Request)
-        case delete
+        case delete(subaccountId: String)
         case disable(subaccountId: String)
         case enable(subaccountId: String)
         case getCustomLimit(subaccountId: String)
@@ -54,6 +54,11 @@ extension Mailgun.Subaccounts.API {
                 }
                 
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.delete)) {
+                    Headers {
+                        Field("X-Mailgun-On-Behalf-Of") {
+                            Parse(.string)
+                        }
+                    }
                     Method.delete
                     Path { "v5" }
                     Path.accounts
