@@ -15,27 +15,62 @@ extension Mailgun {
 extension Mailgun.Keys {
     public struct Key: Sendable, Codable, Equatable {
         public let id: String
-        public let createdAt: Date
+        public let createdAt: String  // API returns string date
+        public let updatedAt: String?
         public let description: String?
-        public let isActive: Bool
+        public let isDisabled: Bool
+        public let kind: Kind?
+        public let role: String?
+        public let domainName: String?
+        public let requestor: String?
+        public let userName: String?
+        public let expiresAt: String?
         
         public init(
             id: String,
-            createdAt: Date,
+            createdAt: String,
+            updatedAt: String? = nil,
             description: String? = nil,
-            isActive: Bool = true
+            isDisabled: Bool = false,
+            kind: Kind? = nil,
+            role: String? = nil,
+            domainName: String? = nil,
+            requestor: String? = nil,
+            userName: String? = nil,
+            expiresAt: String? = nil
         ) {
             self.id = id
             self.createdAt = createdAt
+            self.updatedAt = updatedAt
             self.description = description
-            self.isActive = isActive
+            self.isDisabled = isDisabled
+            self.kind = kind
+            self.role = role
+            self.domainName = domainName
+            self.requestor = requestor
+            self.userName = userName
+            self.expiresAt = expiresAt
         }
         
         private enum CodingKeys: String, CodingKey {
             case id
             case createdAt = "created_at"
+            case updatedAt = "updated_at"
             case description
-            case isActive = "is_active"
+            case isDisabled = "is_disabled"
+            case kind
+            case role
+            case domainName = "domain_name"
+            case requestor
+            case userName = "user_name"
+            case expiresAt = "expires_at"
+        }
+        
+        public enum Kind: String, Sendable, Codable, Equatable {
+            case domain = "domain"
+            case user = "user"
+            case web = "web"
+            case `public` = "public"
         }
     }
     
@@ -62,27 +97,84 @@ extension Mailgun.Keys {
     public enum Create {
         public struct Request: Sendable, Codable, Equatable {
             public let description: String?
+            public let role: String
+            public let kind: String?
             
-            public init(description: String? = nil) {
+            public init(
+                description: String? = nil,
+                role: String = "admin",
+                kind: String? = nil
+            ) {
                 self.description = description
+                self.role = role
+                self.kind = kind
             }
         }
         
         public struct Response: Sendable, Decodable, Equatable {
-            public let key: Mailgun.Keys.Key
-            public let keyValue: String
+            public let message: String
+            public let key: Key
             
             public init(
-                key: Mailgun.Keys.Key,
-                keyValue: String
+                message: String,
+                key: Key
             ) {
+                self.message = message
                 self.key = key
-                self.keyValue = keyValue
             }
             
-            private enum CodingKeys: String, CodingKey {
-                case key
-                case keyValue = "key_value"
+            public struct Key: Sendable, Decodable, Equatable {
+                public let id: String
+                public let description: String?
+                public let kind: String?
+                public let role: String?
+                public let createdAt: String
+                public let updatedAt: String?
+                public let secret: String
+                public let isDisabled: Bool
+                public let domainName: String?
+                public let requestor: String?
+                public let userName: String?
+                
+                public init(
+                    id: String,
+                    description: String? = nil,
+                    kind: String? = nil,
+                    role: String? = nil,
+                    createdAt: String,
+                    updatedAt: String? = nil,
+                    secret: String,
+                    isDisabled: Bool = false,
+                    domainName: String? = nil,
+                    requestor: String? = nil,
+                    userName: String? = nil
+                ) {
+                    self.id = id
+                    self.description = description
+                    self.kind = kind
+                    self.role = role
+                    self.createdAt = createdAt
+                    self.updatedAt = updatedAt
+                    self.secret = secret
+                    self.isDisabled = isDisabled
+                    self.domainName = domainName
+                    self.requestor = requestor
+                    self.userName = userName
+                }
+                
+                private enum CodingKeys: String, CodingKey {
+                    case id
+                    case description
+                    case kind
+                    case role
+                    case createdAt = "created_at"
+                    case updatedAt = "updated_at"
+                    case secret
+                    case isDisabled = "is_disabled"
+                    case domainName = "domain_name"
+                    case requestor
+                    case userName = "user_name"
+                }
             }
         }
     }
