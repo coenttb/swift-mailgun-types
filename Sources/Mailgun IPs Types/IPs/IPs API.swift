@@ -14,10 +14,10 @@ extension Mailgun.IPs {
         case list
         case get(ip: String)
         case listDomains(ip: String)
-        case assignDomain(ip: String, request: Mailgun.IPs.AssignDomainRequest)
+        case assignDomain(ip: String, request: Mailgun.IPs.AssignDomain.Request)
         case unassignDomain(ip: String, domain: String)
-        case assignIPBand(ip: String, request: Mailgun.IPs.IPBandRequest)
-        case requestNew(request: Mailgun.IPs.RequestNewRequest)
+        case assignIPBand(ip: String, request: Mailgun.IPs.IPBand.Request)
+        case requestNew(request: Mailgun.IPs.RequestNew.Request)
         case getRequestedIPs
         case deleteDomainIP(domain: Domain, ip: String)
         case deleteDomainPool(domain: Domain, ip: String)
@@ -57,7 +57,7 @@ extension Mailgun.IPs.API {
                     Path.ips
                     Path { Parse(.string) }
                     Path { "domains" }
-                    Body(.form(Mailgun.IPs.AssignDomainRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    Body(.form(Mailgun.IPs.AssignDomain.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
                 
                 URLRouting.Route(.case(Mailgun.IPs.API.unassignDomain)) {
@@ -75,7 +75,7 @@ extension Mailgun.IPs.API {
                     Path.ips
                     Path { Parse(.string) }
                     Path.ipBand
-                    Body(.form(Mailgun.IPs.IPBandRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    Body(.form(Mailgun.IPs.IPBand.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
                 
                 URLRouting.Route(.case(Mailgun.IPs.API.requestNew)) {
@@ -84,7 +84,7 @@ extension Mailgun.IPs.API {
                     Path.ips
                     Path { "request" }
                     Path { "new" }
-                    Body(.form(Mailgun.IPs.RequestNewRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    Body(.form(Mailgun.IPs.RequestNew.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
                 
                 URLRouting.Route(.case(Mailgun.IPs.API.getRequestedIPs)) {

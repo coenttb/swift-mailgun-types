@@ -13,33 +13,33 @@ extension Mailgun.IPs {
     @DependencyClient
     public struct Client: Sendable {
         @DependencyEndpoint
-        public var list: @Sendable () async throws -> Mailgun.IPs.ListResponse
+        public var list: @Sendable () async throws -> Mailgun.IPs.List.Response
         
         @DependencyEndpoint
         public var get: @Sendable (_ ip: String) async throws -> Mailgun.IPs.IP
         
         @DependencyEndpoint
-        public var listDomains: @Sendable (_ ip: String) async throws -> Mailgun.IPs.DomainListResponse
+        public var listDomains: @Sendable (_ ip: String) async throws -> Mailgun.IPs.DomainList.Response
         
         @DependencyEndpoint
-        public var assignDomain: @Sendable (_ ip: String, _ request: Mailgun.IPs.AssignDomainRequest) async throws -> Mailgun.IPs.AssignDomainResponse
+        public var assignDomain: @Sendable (_ ip: String, _ request: Mailgun.IPs.AssignDomain.Request) async throws -> Mailgun.IPs.AssignDomain.Response
         
         @DependencyEndpoint
-        public var unassignDomain: @Sendable (_ ip: String, _ domain: String) async throws -> Mailgun.IPs.DeleteResponse
+        public var unassignDomain: @Sendable (_ ip: String, _ domain: String) async throws -> Mailgun.IPs.Delete.Response
         
         @DependencyEndpoint
-        public var assignIPBand: @Sendable (_ ip: String, _ request: Mailgun.IPs.IPBandRequest) async throws -> Mailgun.IPs.IPBandResponse
+        public var assignIPBand: @Sendable (_ ip: String, _ request: Mailgun.IPs.IPBand.Request) async throws -> Mailgun.IPs.IPBand.Response
         
         @DependencyEndpoint
-        public var requestNew: @Sendable (_ request: Mailgun.IPs.RequestNewRequest) async throws -> Mailgun.IPs.RequestNewResponse
+        public var requestNew: @Sendable (_ request: Mailgun.IPs.RequestNew.Request) async throws -> Mailgun.IPs.RequestNew.Response
         
         @DependencyEndpoint
-        public var getRequestedIPs: @Sendable () async throws -> Mailgun.IPs.RequestNewResponse
+        public var getRequestedIPs: @Sendable () async throws -> Mailgun.IPs.RequestNew.Response
         
         @DependencyEndpoint
-        public var deleteDomainIP: @Sendable (_ domain: String, _ ip: String) async throws -> Mailgun.IPs.DeleteResponse
+        public var deleteDomainIP: @Sendable (_ domain: String, _ ip: String) async throws -> Mailgun.IPs.Delete.Response
         
         @DependencyEndpoint
-        public var deleteDomainPool: @Sendable (_ domain: String, _ ip: String) async throws -> Mailgun.IPs.DeleteResponse
+        public var deleteDomainPool: @Sendable (_ domain: String, _ ip: String) async throws -> Mailgun.IPs.Delete.Response
     }
 }

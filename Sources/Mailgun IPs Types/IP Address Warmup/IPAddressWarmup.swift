@@ -12,6 +12,8 @@ extension Mailgun {
     public enum IPAddressWarmup {}
 }
 
+// MARK: - Core Types
+
 extension Mailgun.IPAddressWarmup {
     public struct IPWarmup: Sendable, Codable, Equatable {
         public let ip: String
@@ -65,26 +67,56 @@ extension Mailgun.IPAddressWarmup {
             case paused = "paused"
         }
     }
-    
-    public struct ListResponse: Sendable, Codable, Equatable {
-        public let items: [IPWarmup]
-        public let totalCount: Int
+}
+
+// MARK: - List Operation
+
+extension Mailgun.IPAddressWarmup {
+    public enum List {}
+}
+
+extension Mailgun.IPAddressWarmup.List {
+    public struct Response: Sendable, Codable, Equatable {
+        public let items: [Mailgun.IPAddressWarmup.IPWarmup]
+        public let paging: Paging?
         
         public init(
-            items: [IPWarmup],
-            totalCount: Int
+            items: [Mailgun.IPAddressWarmup.IPWarmup],
+            paging: Paging? = nil
         ) {
             self.items = items
-            self.totalCount = totalCount
+            self.paging = paging
         }
         
-        private enum CodingKeys: String, CodingKey {
-            case items
-            case totalCount = "total_count"
+        public struct Paging: Sendable, Codable, Equatable {
+            public let previous: String
+            public let first: String
+            public let next: String
+            public let last: String
+            
+            public init(
+                previous: String,
+                first: String,
+                next: String,
+                last: String
+            ) {
+                self.previous = previous
+                self.first = first
+                self.next = next
+                self.last = last
+            }
         }
     }
-    
-    public struct CreateRequest: Sendable, Codable, Equatable {
+}
+
+// MARK: - Create Operation
+
+extension Mailgun.IPAddressWarmup {
+    public enum Create {}
+}
+
+extension Mailgun.IPAddressWarmup.Create {
+    public struct Request: Sendable, Codable, Equatable {
         public let enabled: Bool?
         public let volumeDailyCapacity: Int?
         
@@ -102,7 +134,7 @@ extension Mailgun.IPAddressWarmup {
         }
     }
     
-    public struct CreateResponse: Sendable, Codable, Equatable {
+    public struct Response: Sendable, Codable, Equatable {
         public let message: String
         public let ip: String
         
@@ -114,8 +146,16 @@ extension Mailgun.IPAddressWarmup {
             self.ip = ip
         }
     }
-    
-    public struct DeleteResponse: Sendable, Codable, Equatable {
+}
+
+// MARK: - Delete Operation
+
+extension Mailgun.IPAddressWarmup {
+    public enum Delete {}
+}
+
+extension Mailgun.IPAddressWarmup.Delete {
+    public struct Response: Sendable, Codable, Equatable {
         public let message: String
         
         public init(message: String) {
