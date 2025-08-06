@@ -48,8 +48,14 @@ extension Mailgun.DynamicIPPools {
     }
 }
 
+// MARK: - History List Operation
+
 extension Mailgun.DynamicIPPools {
-    public struct HistoryListRequest: Sendable, Codable, Equatable {
+    public enum HistoryList {}
+}
+
+extension Mailgun.DynamicIPPools.HistoryList {
+    public struct Request: Sendable, Codable, Equatable {
         public let limit: Int?
         public let includeSubaccounts: Bool?
         public let domain: String?
@@ -88,13 +94,13 @@ extension Mailgun.DynamicIPPools {
     }
 }
 
-extension Mailgun.DynamicIPPools {
-    public struct HistoryListResponse: Sendable, Decodable, Equatable {
-        public let items: [HistoryRecord]
+extension Mailgun.DynamicIPPools.HistoryList {
+    public struct Response: Sendable, Decodable, Equatable {
+        public let items: [Mailgun.DynamicIPPools.HistoryRecord]
         public let paging: PagingInfo?
         
         public init(
-            items: [HistoryRecord],
+            items: [Mailgun.DynamicIPPools.HistoryRecord],
             paging: PagingInfo? = nil
         ) {
             self.items = items
@@ -122,8 +128,14 @@ extension Mailgun.DynamicIPPools {
     }
 }
 
+// MARK: - Remove Override Operation
+
 extension Mailgun.DynamicIPPools {
-    public struct RemoveOverrideResponse: Sendable, Decodable, Equatable {
+    public enum RemoveOverride {}
+}
+
+extension Mailgun.DynamicIPPools.RemoveOverride {
+    public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         
         public init(message: String) {

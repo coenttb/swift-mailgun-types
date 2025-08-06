@@ -12,21 +12,21 @@ extension Mailgun.IPPools {
     @DependencyClient
     public struct Client: Sendable {
         @DependencyEndpoint
-        public var list: @Sendable () async throws -> Mailgun.IPPools.ListResponse
+        public var list: @Sendable () async throws -> Mailgun.IPPools.List.Response
         
         @DependencyEndpoint
-        public var create: @Sendable (_ request: Mailgun.IPPools.CreateRequest) async throws -> Mailgun.IPPools.CreateResponse
+        public var create: @Sendable (_ request: Mailgun.IPPools.Create.Request) async throws -> Mailgun.IPPools.Create.Response
         
         @DependencyEndpoint
         public var get: @Sendable (_ poolId: String) async throws -> Mailgun.IPPools.IPPool
         
         @DependencyEndpoint
-        public var update: @Sendable (_ poolId: String, _ request: Mailgun.IPPools.UpdateRequest) async throws -> Mailgun.IPPools.UpdateResponse
+        public var update: @Sendable (_ poolId: String, _ request: Mailgun.IPPools.Update.Request) async throws -> Mailgun.IPPools.Update.Response
         
         @DependencyEndpoint
-        public var delete: @Sendable (_ poolId: String, _ request: Mailgun.IPPools.DeleteRequest?) async throws -> Mailgun.IPPools.DeleteResponse
+        public var delete: @Sendable (_ poolId: String, _ request: Mailgun.IPPools.Delete.Request?) async throws -> Mailgun.IPPools.Delete.Response
         
         @DependencyEndpoint
-        public var listDomains: @Sendable (_ poolId: String) async throws -> Mailgun.IPPools.DomainsListResponse
+        public var listDomains: @Sendable (_ poolId: String) async throws -> Mailgun.IPPools.DomainsList.Response
     }
 }

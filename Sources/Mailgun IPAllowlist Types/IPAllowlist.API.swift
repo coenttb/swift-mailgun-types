@@ -63,6 +63,6 @@ extension Path<PathBuilder.Component<String>> {
     
     nonisolated(unsafe)
     public static let ipAllowlist: Path<PathBuilder.Component<String>> = Path {
-        "ip_Allowlist"
+        "ip_allowlist"
     }
 }
