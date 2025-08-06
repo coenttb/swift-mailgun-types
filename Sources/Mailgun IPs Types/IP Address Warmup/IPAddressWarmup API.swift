@@ -13,7 +13,7 @@ extension Mailgun.IPAddressWarmup {
     public enum API: Equatable, Sendable {
         case list
         case get(ip: String)
-        case create(ip: String, request: Mailgun.IPAddressWarmup.CreateRequest)
+        case create(ip: String, request: Mailgun.IPAddressWarmup.Create.Request)
         case delete(ip: String)
     }
 }
@@ -42,7 +42,7 @@ extension Mailgun.IPAddressWarmup.API {
                     Path { "v3" }
                     Path.ipWarmups
                     Path { Parse(.string) }
-                    Body(.form(Mailgun.IPAddressWarmup.CreateRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    Body(.form(Mailgun.IPAddressWarmup.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
                 
                 URLRouting.Route(.case(Mailgun.IPAddressWarmup.API.delete)) {
