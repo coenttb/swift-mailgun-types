@@ -61,13 +61,15 @@ struct SubaccountsRouterTests {
     func testDeleteSubaccountsURL() throws {
         let router: Mailgun.Subaccounts.API.Router = .init()
         
-        let api: Mailgun.Subaccounts.API = .delete
+        let subaccountId = "test-subaccount-123"
+        let api: Mailgun.Subaccounts.API = .delete(subaccountId: subaccountId)
         
         let url = router.url(for: api)
-        #expect(url.path == "/v5/accounts/subaccounts")
+        #expect(url.path == "/v5/accounts/subaccounts/test-subaccount-123")
         
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
+        #expect(match.delete?.description == "test-subaccount-123")
     }
     
     @Test("Creates correct URL for disabling a subaccount")
@@ -171,7 +173,7 @@ struct SubaccountsRouterTests {
         let getApi: Mailgun.Subaccounts.API = .get(subaccountId: "123")
         let listApi: Mailgun.Subaccounts.API = .list
         let createApi: Mailgun.Subaccounts.API = .create(request: .init(name: "Test"))
-        let deleteApi: Mailgun.Subaccounts.API = .delete
+        let deleteApi: Mailgun.Subaccounts.API = .delete(subaccountId: "123")
         let disableApi: Mailgun.Subaccounts.API = .disable(subaccountId: "123")
         let enableApi: Mailgun.Subaccounts.API = .enable(subaccountId: "123")
         let getCustomLimitApi: Mailgun.Subaccounts.API = .getCustomLimit(subaccountId: "123")
