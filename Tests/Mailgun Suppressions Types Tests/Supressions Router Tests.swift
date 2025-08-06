@@ -6,10 +6,10 @@
 //
 
 import DependenciesTestSupport
-import Testing
-import EmailAddress
 import Domain
+import EmailAddress
 @testable import Mailgun_Suppressions_Types
+import Testing
 
 @Suite(
     "Suppressions Router Tests"
@@ -23,7 +23,7 @@ struct SuppressionsRouterTests {
         let listRequest = Mailgun.Suppressions.Bounces.List.Request(limit: 25)
         let bouncesAPI = Mailgun.Suppressions.Bounces.API.list(domain: try .init("test.domain.com"), request: listRequest)
         let api: Mailgun.Suppressions.API = .bounces(bouncesAPI)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/bounces")
 
@@ -32,7 +32,7 @@ struct SuppressionsRouterTests {
             uniqueKeysWithValues: (components?.queryItems ?? []).map { ($0.name, $0.value) }
         )
         #expect(queryDict["limit"] == "25")
-        
+
         let match: Mailgun.Suppressions.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.bounces))
         #expect(match.bounces?.list?.domain == (try .init("test.domain.com")))

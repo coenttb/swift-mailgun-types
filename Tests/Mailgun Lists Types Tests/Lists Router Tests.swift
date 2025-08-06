@@ -6,9 +6,9 @@
 //
 
 import DependenciesTestSupport
-import Testing
 import EmailAddress
 @testable import Mailgun_Lists_Types
+import Testing
 
 @Suite(
     "Lists Router Tests"
@@ -28,10 +28,10 @@ struct ListsRouterTests {
         )
 
         let api: Mailgun.Lists.API = .create(request: createRequest)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists")
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.create))
         #expect(match.create?.address.rawValue == "developers@test.com")
@@ -52,7 +52,7 @@ struct ListsRouterTests {
         )
 
         let api: Mailgun.Lists.API = .list(request: listRequest)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists")
 
@@ -63,7 +63,7 @@ struct ListsRouterTests {
         #expect(queryDict["limit"] == "100")
         #expect(queryDict["skip"] == "0")
         #expect(queryDict["address"] == "test@example.com")
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         #expect(match.list?.limit == 100)
@@ -86,13 +86,13 @@ struct ListsRouterTests {
             listAddress: try .init("developers@test.com"),
             request: membersRequest
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members")
         #expect(url.query?.contains("subscribed=true") == true)
         #expect(url.query?.contains("limit=50") == true)
         #expect(url.query?.contains("skip=10") == true)
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.members))
         #expect(match.members?.listAddress.rawValue == "developers@test.com")
@@ -118,10 +118,10 @@ struct ListsRouterTests {
             listAddress: try .init("developers@test.com"),
             request: addRequest
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members")
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.addMember))
         #expect(match.addMember?.listAddress.rawValue == "developers@test.com")
@@ -150,11 +150,11 @@ struct ListsRouterTests {
             members: members,
             upsert: true
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members.json")
         #expect(url.query?.contains("upsert=true") == true)
-        
+
         // Skip round-trip test for bulk add due to multipart form data
         // The body contains complex JSON that cannot be easily round-tripped
     }
@@ -167,10 +167,10 @@ struct ListsRouterTests {
             listAddress: try .init("developers@test.com"),
             memberAddress: try .init("member@example.com")
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members/member@example.com")
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.getMember))
         #expect(match.getMember?.listAddress.rawValue == "developers@test.com")
@@ -193,10 +193,10 @@ struct ListsRouterTests {
             memberAddress: try .init("member@example.com"),
             request: updateRequest
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members/member@example.com")
-        
+
         // Note: Round-trip testing for multipart form routes is complex due to dynamic boundary generation
         // The router generates a unique boundary for each multipart request which makes exact matching difficult
         // We verify URL generation works correctly above
@@ -210,10 +210,10 @@ struct ListsRouterTests {
             listAddress: try .init("developers@test.com"),
             memberAddress: try .init("member@example.com")
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members/member@example.com")
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteMember))
         #expect(match.deleteMember?.listAddress.rawValue == "developers@test.com")
@@ -236,10 +236,10 @@ struct ListsRouterTests {
             listAddress: try .init("developers@test.com"),
             request: updateRequest
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com")
-        
+
         // Note: Round-trip testing for multipart form routes is complex due to dynamic boundary generation
         // The router generates a unique boundary for each multipart request which makes exact matching difficult
         // We verify URL generation works correctly above
@@ -250,10 +250,10 @@ struct ListsRouterTests {
         let router: Mailgun.Lists.API.Router = .init()
 
         let api: Mailgun.Lists.API = .delete(listAddress: try .init("developers@test.com"))
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com")
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
         #expect(match.delete?.rawValue == "developers@test.com")
@@ -264,10 +264,10 @@ struct ListsRouterTests {
         let router: Mailgun.Lists.API.Router = .init()
 
         let api: Mailgun.Lists.API = .get(listAddress: try .init("developers@test.com"))
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com")
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
         #expect(match.get?.rawValue == "developers@test.com")
@@ -278,11 +278,11 @@ struct ListsRouterTests {
         let router: Mailgun.Lists.API.Router = .init()
 
         let api: Mailgun.Lists.API = .pages(limit: 50)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/pages")
         #expect(url.query?.contains("limit=50") == true)
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.pages))
         #expect(match.pages == 50)
@@ -303,14 +303,14 @@ struct ListsRouterTests {
             listAddress: try .init("developers@test.com"),
             request: request
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members/pages")
         #expect(url.query?.contains("subscribed=true") == true)
         #expect(url.query?.contains("limit=30") == true)
         #expect(url.query?.contains("address=test@example.com") == true)
         #expect(url.query?.contains("page=next") == true)
-        
+
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.memberPages))
         #expect(match.memberPages?.listAddress.rawValue == "developers@test.com")

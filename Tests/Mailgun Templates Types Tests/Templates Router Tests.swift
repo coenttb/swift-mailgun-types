@@ -6,9 +6,9 @@
 //
 
 import DependenciesTestSupport
-import Testing
 import Domain
 @testable import Mailgun_Templates_Types
+import Testing
 
 @Suite("Templates Router Tests")
 struct TemplatesRouterTests {
@@ -22,7 +22,7 @@ struct TemplatesRouterTests {
             limit: 100,
             p: nil
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates")
 
@@ -32,7 +32,7 @@ struct TemplatesRouterTests {
 
         #expect(queryDict["page"] == "first")
         #expect(queryDict["limit"] == "100")
-        
+
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         #expect(match.list?.domainId == (try .init("test.domain.com")))
@@ -56,10 +56,10 @@ struct TemplatesRouterTests {
 
         let domain = try Domain("test.domain.com")
         let api: Mailgun.Templates.API = .create(domainId: domain, request: request)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates")
-        
+
         // Note: Round-trip test skipped for multipart form data APIs
         // due to dynamic boundary generation that prevents exact matching
     }
@@ -74,7 +74,7 @@ struct TemplatesRouterTests {
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates/template123")
-        
+
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
         #expect(match.get?.domainId == (try .init("test.domain.com")))
@@ -96,7 +96,7 @@ struct TemplatesRouterTests {
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates/template123")
-        
+
         // Note: Round-trip test skipped for multipart form data APIs
         // due to dynamic boundary generation that prevents exact matching
     }
@@ -111,7 +111,7 @@ struct TemplatesRouterTests {
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates/template123")
-        
+
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
         #expect(match.delete?.domainId == (try .init("test.domain.com")))
@@ -135,7 +135,7 @@ struct TemplatesRouterTests {
 
         #expect(queryDict["page"] == "next")
         #expect(queryDict["limit"] == "50")
-        
+
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.versions))
         #expect(match.versions?.domainId == (try .init("test.domain.com")))
@@ -161,7 +161,7 @@ struct TemplatesRouterTests {
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates/template123/versions")
-        
+
         // Note: Round-trip test skipped for multipart form data APIs
         // due to dynamic boundary generation that prevents exact matching
     }
@@ -177,7 +177,7 @@ struct TemplatesRouterTests {
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates/template123/versions/version456")
-        
+
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.getVersion))
         #expect(match.getVersion?.domainId == (try .init("test.domain.com")))
@@ -203,7 +203,7 @@ struct TemplatesRouterTests {
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates/template123/versions/version456")
-        
+
         // Note: Round-trip test skipped for multipart form data APIs
         // due to dynamic boundary generation that prevents exact matching
     }
@@ -219,7 +219,7 @@ struct TemplatesRouterTests {
 
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/templates/template123/versions/version456")
-        
+
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteVersion))
         #expect(match.deleteVersion?.domainId == (try .init("test.domain.com")))
@@ -246,7 +246,7 @@ struct TemplatesRouterTests {
         let queryDict = [String: String?](uniqueKeysWithValues: queryItems.map { ($0.name, $0.value) })
 
         #expect(queryDict["comment"] == "Copied version")
-        
+
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.copyVersion))
         #expect(match.copyVersion?.domainId == (try .init("test.domain.com")))

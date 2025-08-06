@@ -27,7 +27,7 @@ extension Mailgun.Subaccounts {
 extension Mailgun.Subaccounts.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Subaccounts.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.get)) {
@@ -37,14 +37,14 @@ extension Mailgun.Subaccounts.API {
                     Path.subaccounts
                     Path { Parse(.string) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.list)) {
                     Method.get
                     Path { "v5" }
                     Path.accounts
                     Path.subaccounts
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.create)) {
                     Method.post
                     Path { "v5" }
@@ -52,7 +52,7 @@ extension Mailgun.Subaccounts.API {
                     Path.subaccounts
                     Body(.form(Mailgun.Subaccounts.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.delete)) {
                     Headers {
                         Field("X-Mailgun-On-Behalf-Of") {
@@ -64,7 +64,7 @@ extension Mailgun.Subaccounts.API {
                     Path.accounts
                     Path.subaccounts
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.disable)) {
                     Method.post
                     Path { "v5" }
@@ -73,7 +73,7 @@ extension Mailgun.Subaccounts.API {
                     Path { Parse(.string) }
                     Path.disable
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.enable)) {
                     Method.post
                     Path { "v5" }
@@ -82,7 +82,7 @@ extension Mailgun.Subaccounts.API {
                     Path { Parse(.string) }
                     Path.enable
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.getCustomLimit)) {
                     Method.get
                     Path { "v5" }
@@ -93,7 +93,7 @@ extension Mailgun.Subaccounts.API {
                     Path.custom
                     Path.monthly
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.updateCustomLimit)) {
                     Method.put
                     Path { "v5" }
@@ -105,7 +105,7 @@ extension Mailgun.Subaccounts.API {
                     Path.monthly
                     Body(.form(Mailgun.Subaccounts.CustomLimit.UpdateRequest.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.deleteCustomLimit)) {
                     Method.delete
                     Path { "v5" }
@@ -116,7 +116,7 @@ extension Mailgun.Subaccounts.API {
                     Path.custom
                     Path.monthly
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.updateFeatures)) {
                     Method.put
                     Path { "v5" }
@@ -136,37 +136,37 @@ extension Path<PathBuilder.Component<String>> {
     public static let accounts: Path<PathBuilder.Component<String>> = Path {
         "accounts"
     }
-    
+
     nonisolated(unsafe)
     public static let subaccounts: Path<PathBuilder.Component<String>> = Path {
         "subaccounts"
     }
-    
+
     nonisolated(unsafe)
     public static let disable: Path<PathBuilder.Component<String>> = Path {
         "disable"
     }
-    
+
     nonisolated(unsafe)
     public static let enable: Path<PathBuilder.Component<String>> = Path {
         "enable"
     }
-    
+
     nonisolated(unsafe)
     public static let limit: Path<PathBuilder.Component<String>> = Path {
         "limit"
     }
-    
+
     nonisolated(unsafe)
     public static let custom: Path<PathBuilder.Component<String>> = Path {
         "custom"
     }
-    
+
     nonisolated(unsafe)
     public static let monthly: Path<PathBuilder.Component<String>> = Path {
         "monthly"
     }
-    
+
     nonisolated(unsafe)
     public static let features: Path<PathBuilder.Component<String>> = Path {
         "features"

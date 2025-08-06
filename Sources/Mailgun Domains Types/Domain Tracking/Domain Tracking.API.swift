@@ -21,7 +21,7 @@ extension Mailgun.Domains.Domains.Tracking {
 extension Mailgun.Domains.Domains.Tracking.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Domains.Domains.Tracking.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.get)) {
@@ -31,7 +31,7 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     Path { Parse(.string.representing(TypesFoundation.Domain.self)) }
                     Path { "tracking" }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.updateClick)) {
                     Method.put
                     Path { "v3" }
@@ -41,7 +41,7 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     Path { "click" }
                     Body(.form(Mailgun.Domains.Domains.Tracking.UpdateClick.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.updateOpen)) {
                     Method.put
                     Path { "v3" }
@@ -51,7 +51,7 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     Path { "open" }
                     Body(.form(Mailgun.Domains.Domains.Tracking.UpdateOpen.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.updateUnsubscribe)) {
                     Method.put
                     Path { "v3" }

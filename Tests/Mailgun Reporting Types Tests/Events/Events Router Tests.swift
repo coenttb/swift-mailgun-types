@@ -6,8 +6,8 @@
 //
 
 import DependenciesTestSupport
-import Testing
 @testable import Mailgun_Reporting_Types
+import Testing
 
 @Suite(
     "Events Router Tests"
@@ -22,10 +22,10 @@ struct EventsRouterTests {
             domain: try .init("test.domain.com"),
             query: nil
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/events")
-        
+
         let match: Mailgun.Reporting.Events.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         #expect(match.list?.domain == (try .init("test.domain.com")))
@@ -34,7 +34,7 @@ struct EventsRouterTests {
         #expect(match.list?.query?.end == nil)
         #expect(match.list?.query?.ascending == nil)
     }
-    
+
     @Test("Creates correct URL for listing events with query parameters")
     func testListEventsWithQueryURL() throws {
         let router: Mailgun.Reporting.Events.API.Router = .init()
@@ -44,15 +44,15 @@ struct EventsRouterTests {
             end: Date(timeIntervalSince1970: .timeInterval1970to20220102),
             ascending: .yes
         )
-        
+
         let api: Mailgun.Reporting.Events.API = .list(
             domain: try .init("test.domain.com"),
             query: query
         )
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/test.domain.com/events")
-        
+
         let match: Mailgun.Reporting.Events.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         #expect(match.list?.domain == (try .init("test.domain.com")))

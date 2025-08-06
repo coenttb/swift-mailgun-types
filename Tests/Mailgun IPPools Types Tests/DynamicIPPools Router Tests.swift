@@ -6,16 +6,16 @@
 //
 
 import DependenciesTestSupport
-import Testing
 @testable import Mailgun_IPPools_Types
+import Testing
 
 @Suite("Dynamic IP Pools Router Tests")
 struct DynamicIPPoolsRouterTests {
-    
+
     @Test("Creates correct URL for listing history")
     func testListHistoryURL() throws {
         let router: Mailgun.DynamicIPPools.API.Router = .init()
-        
+
         let request = Mailgun.DynamicIPPools.HistoryListRequest(
             limit: 10,
             includeSubaccounts: true,
@@ -26,7 +26,7 @@ struct DynamicIPPoolsRouterTests {
             movedFrom: "pool-b"
         )
         let api: Mailgun.DynamicIPPools.API = .listHistory(request: request)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v1/dynamic_pools/history")
         #expect(url.query?.contains("Limit=10") == true)
@@ -36,16 +36,16 @@ struct DynamicIPPoolsRouterTests {
         #expect(url.query?.contains("after=2024-01-01") == true)
         #expect(url.query?.contains("moved_to=pool-a") == true)
         #expect(url.query?.contains("moved_from=pool-b") == true)
-        
+
         let match: Mailgun.DynamicIPPools.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.listHistory))
         #expect(match.listHistory?.domain == "test.com")
     }
-    
+
     @Test("Client test implementation")
     func testDynamicIPPoolsClient() async throws {
         let testDate = Date(timeIntervalSince1970: 1704067200) // 2024-01-01
-        
+
         let client = Mailgun.DynamicIPPools.Client(
             listHistory: { request in
                 #expect(request.limit == 20)
@@ -83,7 +83,7 @@ struct DynamicIPPoolsRouterTests {
                 )
             }
         )
-        
+
         let historyResponse = try await client.listHistory(
             Mailgun.DynamicIPPools.HistoryListRequest(
                 limit: 20,
@@ -96,11 +96,11 @@ struct DynamicIPPoolsRouterTests {
         #expect(historyResponse.items[0].movedTo == "pool-b")
         #expect(historyResponse.items[1].movedFrom == nil)
         #expect(historyResponse.paging?.next != nil)
-        
+
         let removeResponse = try await client.removeOverride("test.com")
         #expect(removeResponse.message == "Override removed successfully")
     }
-    
+
     @Test("Test history record coding")
     func testHistoryRecordCoding() throws {
         let record = Mailgun.DynamicIPPools.HistoryRecord(
@@ -111,22 +111,22 @@ struct DynamicIPPoolsRouterTests {
             reason: "Health check",
             accountId: "acc-123"
         )
-        
+
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         let data = try encoder.encode(record)
-        
+
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let decoded = try decoder.decode(Mailgun.DynamicIPPools.HistoryRecord.self, from: data)
-        
+
         #expect(decoded.domain == record.domain)
         #expect(decoded.movedFrom == record.movedFrom)
         #expect(decoded.movedTo == record.movedTo)
         #expect(decoded.reason == record.reason)
         #expect(decoded.accountId == record.accountId)
     }
-    
+
     @Test("Test history list request with all parameters")
     func testHistoryListRequestAllParameters() throws {
         let request = Mailgun.DynamicIPPools.HistoryListRequest(
@@ -138,7 +138,7 @@ struct DynamicIPPoolsRouterTests {
             movedTo: "pool-high",
             movedFrom: "pool-low"
         )
-        
+
         #expect(request.limit == 50)
         #expect(request.includeSubaccounts == false)
         #expect(request.domain == "specific.com")

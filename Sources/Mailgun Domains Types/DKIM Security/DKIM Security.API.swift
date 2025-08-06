@@ -19,7 +19,7 @@ extension Mailgun.Domains.DKIM_Security {
 extension Mailgun.Domains.DKIM_Security.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Domains.DKIM_Security.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Domains.DKIM_Security.API.updateRotation)) {
@@ -31,7 +31,7 @@ extension Mailgun.Domains.DKIM_Security.API {
                     Path { "rotation" }
                     Body(.form(Mailgun.Domains.DKIM_Security.Rotation.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.DKIM_Security.API.rotateManually)) {
                     Method.post
                     Path { "v1" }

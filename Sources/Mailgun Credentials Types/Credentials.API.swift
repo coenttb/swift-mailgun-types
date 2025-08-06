@@ -23,7 +23,7 @@ extension Mailgun.Credentials {
 extension Mailgun.Credentials.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Credentials.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Credentials.API.list)) {
@@ -45,7 +45,7 @@ extension Mailgun.Credentials.API {
                         }
                     }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Credentials.API.create)) {
                     Method.post
                     Path { "v3" }
@@ -54,7 +54,7 @@ extension Mailgun.Credentials.API {
                     Path.credentials
                     Body(.form(Mailgun.Credentials.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Credentials.API.deleteAll)) {
                     Method.delete
                     Path { "v3" }
@@ -62,7 +62,7 @@ extension Mailgun.Credentials.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.credentials
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Credentials.API.update)) {
                     Method.put
                     Path { "v3" }
@@ -72,7 +72,7 @@ extension Mailgun.Credentials.API {
                     Path { Parse(.string) }
                     Body(.form(Mailgun.Credentials.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Credentials.API.delete)) {
                     Method.delete
                     Path { "v3" }
@@ -81,7 +81,7 @@ extension Mailgun.Credentials.API {
                     Path.credentials
                     Path { Parse(.string) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Credentials.API.updateMailbox)) {
                     Method.put
                     Path { "v3" }
@@ -100,12 +100,12 @@ extension Path<PathBuilder.Component<String>> {
     public static let credentials: Path<PathBuilder.Component<String>> = Path {
         "credentials"
     }
-    
+
     nonisolated(unsafe)
     public static let mailboxes: Path<PathBuilder.Component<String>> = Path {
         "mailboxes"
     }
-    
+
     nonisolated(unsafe)
     public static let domains: Path<PathBuilder.Component<String>> = Path {
         "domains"

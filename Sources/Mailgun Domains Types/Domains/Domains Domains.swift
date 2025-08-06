@@ -33,7 +33,7 @@ extension Mailgun.Domains.Domains {
         public let useAutomaticSenderSecurity: Bool?
         public let encryptIncomingMessage: Bool?
         public let messageTtl: Int?
-        
+
         public init(
             id: String? = nil,
             name: String,
@@ -73,7 +73,7 @@ extension Mailgun.Domains.Domains {
             self.encryptIncomingMessage = encryptIncomingMessage
             self.messageTtl = messageTtl
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case id
             case name
@@ -95,31 +95,31 @@ extension Mailgun.Domains.Domains {
             case messageTtl = "message_ttl"
         }
     }
-    
+
     public enum SpamAction: String, Sendable, Codable, Equatable {
         case disabled = "disabled"
         case block = "block"
         case tag = "tag"
     }
-    
+
     public enum State: String, Sendable, Codable, Equatable {
         case active = "active"
         case unverified = "unverified"
         case disabled = "disabled"
     }
-    
+
     public enum DomainType: String, Sendable, Codable, Equatable {
         case sandbox = "sandbox"
         case custom = "custom"
     }
-    
+
     public struct DnsRecord: Sendable, Codable, Equatable {
         public let recordType: String
         public let valid: String
         public let name: String
         public let value: String
         public let priority: String?
-        
+
         public init(
             recordType: String,
             valid: String,
@@ -133,7 +133,7 @@ extension Mailgun.Domains.Domains {
             self.value = value
             self.priority = priority
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case recordType = "record_type"
             case valid
@@ -156,7 +156,7 @@ extension Mailgun.Domains.Domains.List {
         public let state: Mailgun.Domains.Domains.State?
         public let limit: Int?
         public let skip: Int?
-        
+
         public init(
             authority: String? = nil,
             state: Mailgun.Domains.Domains.State? = nil,
@@ -169,11 +169,11 @@ extension Mailgun.Domains.Domains.List {
             self.skip = skip
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let items: [Mailgun.Domains.Domains.DomainInfo]
         public let totalCount: Int
-        
+
         public init(
             items: [Mailgun.Domains.Domains.DomainInfo]? = nil,
             totalCount: Int
@@ -181,13 +181,13 @@ extension Mailgun.Domains.Domains.List {
             self.items = items ?? []
             self.totalCount = totalCount
         }
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.items = try container.decodeIfPresent([Mailgun.Domains.Domains.DomainInfo].self, forKey: .items) ?? []
             self.totalCount = try container.decode(Int.self, forKey: .totalCount)
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case items
             case totalCount = "total_count"
@@ -212,7 +212,7 @@ extension Mailgun.Domains.Domains.Create {
         public let ips: String?
         public let poolId: String?
         public let webScheme: String?
-        
+
         public init(
             name: String,
             smtpPassword: String? = nil,
@@ -234,7 +234,7 @@ extension Mailgun.Domains.Domains.Create {
             self.poolId = poolId
             self.webScheme = webScheme
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case name
             case smtpPassword = "smtp_password"
@@ -247,13 +247,13 @@ extension Mailgun.Domains.Domains.Create {
             case webScheme = "web_scheme"
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let domain: Mailgun.Domains.Domains.DomainInfo
         public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
         public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
         public let message: String
-        
+
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
             receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]? = nil,
@@ -265,7 +265,7 @@ extension Mailgun.Domains.Domains.Create {
             self.sendingDnsRecords = sendingDnsRecords
             self.message = message
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case domain
             case receivingDnsRecords = "receiving_dns_records"
@@ -286,7 +286,7 @@ extension Mailgun.Domains.Domains.Get {
         public let domain: Mailgun.Domains.Domains.DomainInfo
         public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
         public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
-        
+
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
             receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]? = nil,
@@ -296,7 +296,7 @@ extension Mailgun.Domains.Domains.Get {
             self.receivingDnsRecords = receivingDnsRecords
             self.sendingDnsRecords = sendingDnsRecords
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case domain
             case receivingDnsRecords = "receiving_dns_records"
@@ -316,7 +316,7 @@ extension Mailgun.Domains.Domains.Update {
         public let spamAction: Mailgun.Domains.Domains.SpamAction?
         public let webScheme: String?
         public let wildcard: Bool?
-        
+
         public init(
             spamAction: Mailgun.Domains.Domains.SpamAction? = nil,
             webScheme: String? = nil,
@@ -326,20 +326,20 @@ extension Mailgun.Domains.Domains.Update {
             self.webScheme = webScheme
             self.wildcard = wildcard
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case spamAction = "spam_action"
             case webScheme = "web_scheme"
             case wildcard
         }
     }
-    
+
     public struct Response: Sendable, Codable, Equatable {
         public let domain: Mailgun.Domains.Domains.DomainInfo
         public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
         public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
         public let message: String
-        
+
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
             receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]? = nil,
@@ -351,7 +351,7 @@ extension Mailgun.Domains.Domains.Update {
             self.sendingDnsRecords = sendingDnsRecords
             self.message = message
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case domain
             case receivingDnsRecords = "receiving_dns_records"
@@ -370,7 +370,7 @@ extension Mailgun.Domains.Domains {
 extension Mailgun.Domains.Domains.Delete {
     public struct Response: Sendable, Codable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -389,7 +389,7 @@ extension Mailgun.Domains.Domains.Verify {
         public let receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
         public let sendingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]?
         public let message: String
-        
+
         public init(
             domain: Mailgun.Domains.Domains.DomainInfo,
             receivingDnsRecords: [Mailgun.Domains.Domains.DnsRecord]? = nil,
@@ -401,7 +401,7 @@ extension Mailgun.Domains.Domains.Verify {
             self.sendingDnsRecords = sendingDnsRecords
             self.message = message
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case domain
             case receivingDnsRecords = "receiving_dns_records"

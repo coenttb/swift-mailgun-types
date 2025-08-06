@@ -6,8 +6,6 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum Routes {}
 }
@@ -20,7 +18,7 @@ extension Mailgun.Routes {
         public let expression: String
         public let actions: [String]
         public let createdAt: Date
-        
+
         public init(
             id: String,
             priority: Int,
@@ -36,7 +34,7 @@ extension Mailgun.Routes {
             self.actions = actions
             self.createdAt = createdAt
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case id
             case priority
@@ -58,7 +56,7 @@ extension Mailgun.Routes.Create {
         public let description: String
         public let expression: String
         public let action: [String]
-        
+
         public init(
             priority: Int,
             description: String,
@@ -71,11 +69,11 @@ extension Mailgun.Routes.Create {
             self.action = action
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let route: Mailgun.Routes.Route
-        
+
         public init(
             message: String,
             route: Mailgun.Routes.Route
@@ -94,7 +92,7 @@ extension Mailgun.Routes.List {
     public struct Response: Sendable, Decodable, Equatable {
         public let totalCount: Int
         public let items: [Mailgun.Routes.Route]
-        
+
         public init(
             totalCount: Int,
             items: [Mailgun.Routes.Route]
@@ -102,7 +100,7 @@ extension Mailgun.Routes.List {
             self.totalCount = totalCount
             self.items = items
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case totalCount = "total_count"
             case items
@@ -120,7 +118,7 @@ extension Mailgun.Routes.Update {
         public let description: String?
         public let expression: String?
         public let action: [String]?
-        
+
         public init(
             priority: Int? = nil,
             description: String? = nil,
@@ -133,11 +131,11 @@ extension Mailgun.Routes.Update {
             self.action = action
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let id: String?
-        
+
         public init(
             message: String,
             id: String? = nil
@@ -156,7 +154,7 @@ extension Mailgun.Routes.Delete {
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         public let id: String?
-        
+
         public init(
             message: String,
             id: String? = nil
@@ -174,16 +172,16 @@ extension Mailgun.Routes {
 extension Mailgun.Routes.Match {
     public struct Request: Sendable, Codable, Equatable {
         public let recipient: String
-        
+
         public init(recipient: String) {
             self.recipient = recipient
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String?
         public let route: Mailgun.Routes.Route?
-        
+
         public init(
             message: String? = nil,
             route: Mailgun.Routes.Route? = nil

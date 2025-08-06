@@ -19,4 +19,3 @@ extension Mailgun.Reporting.Metrics {
         public var getAccountUsageMetrics: @Sendable (_ request: Mailgun.Reporting.Metrics.GetAccountUsageMetrics.Request) async throws -> Mailgun.Reporting.Metrics.GetAccountUsageMetrics.Response
     }
 }
-

@@ -26,7 +26,7 @@ extension Mailgun.AccountManagement {
 extension Mailgun.AccountManagement.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.AccountManagement.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.updateAccount)) {
@@ -42,28 +42,28 @@ extension Mailgun.AccountManagement.API {
                         }
                     }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.getHttpSigningKey)) {
                     Method.get
                     Path { "v5" }
                     Path.accounts
                     Path.httpSigningKey
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.regenerateHttpSigningKey)) {
                     Method.post
                     Path { "v5" }
                     Path.accounts
                     Path.httpSigningKey
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.getSandboxAuthRecipients)) {
                     Method.get
                     Path { "v5" }
                     Path.sandbox
                     Path.authRecipients
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.addSandboxAuthRecipient)) {
                     Method.post
                     Path { "v5" }
@@ -75,7 +75,7 @@ extension Mailgun.AccountManagement.API {
                         }
                     }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.deleteSandboxAuthRecipient)) {
                     Method.delete
                     Path { "v5" }
@@ -83,21 +83,21 @@ extension Mailgun.AccountManagement.API {
                     Path.authRecipients
                     Path { Parse(.string) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.resendActivationEmail)) {
                     Method.post
                     Path { "v5" }
                     Path.accounts
                     Path.resendActivationEmail
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.getSAMLOrganization)) {
                     Method.get
                     Path { "v5" }
                     Path.accounts
                     Path.samlOrg
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.addSAMLOrganization)) {
                     Method.post
                     Path { "v5" }
@@ -120,27 +120,27 @@ extension Path<PathBuilder.Component<String>> {
     public static let accounts: Path<PathBuilder.Component<String>> = Path {
         "accounts"
     }
-    
+
     nonisolated(unsafe)
     public static let httpSigningKey: Path<PathBuilder.Component<String>> = Path {
         "http_signing_key"
     }
-    
+
     nonisolated(unsafe)
     public static let sandbox: Path<PathBuilder.Component<String>> = Path {
         "sandbox"
     }
-    
+
     nonisolated(unsafe)
     public static let authRecipients: Path<PathBuilder.Component<String>> = Path {
         "auth_recipients"
     }
-    
+
     nonisolated(unsafe)
     public static let resendActivationEmail: Path<PathBuilder.Component<String>> = Path {
         "resend_activation_email"
     }
-    
+
     nonisolated(unsafe)
     public static let samlOrg: Path<PathBuilder.Component<String>> = Path {
         "saml_org"

@@ -13,7 +13,7 @@ extension Mailgun.DynamicIPPools {
     public struct Client: Sendable {
         @DependencyEndpoint
         public var listHistory: @Sendable (_ request: Mailgun.DynamicIPPools.HistoryList.Request) async throws -> Mailgun.DynamicIPPools.HistoryList.Response
-        
+
         @DependencyEndpoint
         public var removeOverride: @Sendable (_ domain: String) async throws -> Mailgun.DynamicIPPools.RemoveOverride.Response
     }

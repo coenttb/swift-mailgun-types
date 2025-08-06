@@ -6,8 +6,8 @@
 //
 
 import DependenciesTestSupport
-import Testing
 @testable import Mailgun_Reporting_Types
+import Testing
 
 @Suite("Reporting Router Tests")
 struct ReportingRouterTests {
@@ -35,10 +35,10 @@ struct ReportingRouterTests {
         )
 
         let api: Mailgun.Reporting.API = .metrics(.getAccountMetrics(request: metricsRequest))
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v1/analytics/metrics")
-        
+
         let match: Mailgun.Reporting.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.metrics))
         // Since match.metrics returns Mailgun.Reporting.Metrics.API, we can't directly test its properties here

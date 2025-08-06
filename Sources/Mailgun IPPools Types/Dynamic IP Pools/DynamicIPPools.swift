@@ -6,8 +6,6 @@
 //
 
 import Mailgun_Types_Shared
-@_exported import Mailgun_Types_Shared
-
 extension Mailgun {
     public enum DynamicIPPools {}
 }
@@ -20,7 +18,7 @@ extension Mailgun.DynamicIPPools {
         public let movedTo: String
         public let reason: String?
         public let accountId: String?
-        
+
         public init(
             domain: String,
             timestamp: Date,
@@ -36,7 +34,7 @@ extension Mailgun.DynamicIPPools {
             self.reason = reason
             self.accountId = accountId
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case domain
             case timestamp
@@ -63,7 +61,7 @@ extension Mailgun.DynamicIPPools.HistoryList {
         public let after: String?
         public let movedTo: String?
         public let movedFrom: String?
-        
+
         public init(
             limit: Int? = nil,
             includeSubaccounts: Bool? = nil,
@@ -81,7 +79,7 @@ extension Mailgun.DynamicIPPools.HistoryList {
             self.movedTo = movedTo
             self.movedFrom = movedFrom
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case limit = "Limit"
             case includeSubaccounts = "include_subaccounts"
@@ -98,7 +96,7 @@ extension Mailgun.DynamicIPPools.HistoryList {
     public struct Response: Sendable, Decodable, Equatable {
         public let items: [Mailgun.DynamicIPPools.HistoryRecord]
         public let paging: PagingInfo?
-        
+
         public init(
             items: [Mailgun.DynamicIPPools.HistoryRecord],
             paging: PagingInfo? = nil
@@ -106,13 +104,13 @@ extension Mailgun.DynamicIPPools.HistoryList {
             self.items = items
             self.paging = paging
         }
-        
+
         public struct PagingInfo: Sendable, Decodable, Equatable {
             public let next: String?
             public let previous: String?
             public let first: String?
             public let last: String?
-            
+
             public init(
                 next: String? = nil,
                 previous: String? = nil,
@@ -137,7 +135,7 @@ extension Mailgun.DynamicIPPools {
 extension Mailgun.DynamicIPPools.RemoveOverride {
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }

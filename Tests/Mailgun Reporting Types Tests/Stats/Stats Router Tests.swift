@@ -6,8 +6,8 @@
 //
 
 import DependenciesTestSupport
-import Testing
 @testable import Mailgun_Reporting_Types
+import Testing
 
 @Suite(
     "Stats Router Tests"
@@ -27,10 +27,10 @@ struct StatsRouterTests {
         )
 
         let api: Mailgun.Reporting.Stats.API = .total(request: request)
-        
+
         let url = router.url(for: api)
         #expect(url.path == "/v3/stats/total")
-        
+
         let match: Mailgun.Reporting.Stats.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.total))
         #expect(match.total?.event == "delivered")

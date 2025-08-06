@@ -23,7 +23,7 @@ extension Mailgun.Domains.Domains {
 extension Mailgun.Domains.Domains.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.Domains.Domains.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.Domains.Domains.API.list)) {
@@ -49,21 +49,21 @@ extension Mailgun.Domains.Domains.API {
                         }
                     }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.API.create)) {
                     Method.post
                     Path { "v4" }
                     Path { "domains" }
                     Body(.form(Mailgun.Domains.Domains.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.API.get)) {
                     Method.get
                     Path { "v4" }
                     Path { "domains" }
                     Path { Parse(.string.representing(TypesFoundation.Domain.self)) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.API.update)) {
                     Method.put
                     Path { "v4" }
@@ -71,14 +71,14 @@ extension Mailgun.Domains.Domains.API {
                     Path { Parse(.string.representing(TypesFoundation.Domain.self)) }
                     Body(.form(Mailgun.Domains.Domains.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.API.delete)) {
                     Method.delete
                     Path { "v4" }
                     Path { "domains" }
                     Path { Parse(.string.representing(TypesFoundation.Domain.self)) }
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.Domains.Domains.API.verify)) {
                     Method.put
                     Path { "v4" }

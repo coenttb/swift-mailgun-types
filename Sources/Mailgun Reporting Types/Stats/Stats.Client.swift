@@ -27,4 +27,3 @@ extension Mailgun.Reporting.Stats {
         public var aggregateCountries: @Sendable () async throws -> Mailgun.Reporting.Stats.AggregatesCountries
     }
 }
-

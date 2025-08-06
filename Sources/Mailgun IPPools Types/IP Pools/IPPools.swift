@@ -19,7 +19,7 @@ extension Mailgun.IPPools {
         public let ips: [String]
         public let isLinked: Bool
         public let linkedDomains: [String]?
-        
+
         public init(
             poolId: String,
             name: String,
@@ -35,7 +35,7 @@ extension Mailgun.IPPools {
             self.isLinked = isLinked
             self.linkedDomains = linkedDomains
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case poolId = "pool_id"
             case name
@@ -57,7 +57,7 @@ extension Mailgun.IPPools.List {
     public struct Response: Sendable, Decodable, Equatable {
         public let ipPools: [Mailgun.IPPools.IPPool]
         public let message: String
-        
+
         public init(
             ipPools: [Mailgun.IPPools.IPPool],
             message: String
@@ -65,7 +65,7 @@ extension Mailgun.IPPools.List {
             self.ipPools = ipPools
             self.message = message
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case ipPools = "ip_pools"
             case message
@@ -84,7 +84,7 @@ extension Mailgun.IPPools.Create {
         public let name: String
         public let description: String
         public let ips: [String]
-        
+
         public init(
             name: String,
             description: String,
@@ -95,11 +95,11 @@ extension Mailgun.IPPools.Create {
             self.ips = ips
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let poolId: String
         public let message: String
-        
+
         public init(
             poolId: String,
             message: String
@@ -107,7 +107,7 @@ extension Mailgun.IPPools.Create {
             self.poolId = poolId
             self.message = message
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case poolId = "pool_id"
             case message
@@ -127,7 +127,7 @@ extension Mailgun.IPPools.Update {
         public let description: String?
         public let addIps: [String]?
         public let removeIps: [String]?
-        
+
         public init(
             name: String? = nil,
             description: String? = nil,
@@ -139,7 +139,7 @@ extension Mailgun.IPPools.Update {
             self.addIps = addIps
             self.removeIps = removeIps
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case name
             case description
@@ -147,10 +147,10 @@ extension Mailgun.IPPools.Update {
             case removeIps = "remove_ips"
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -167,7 +167,7 @@ extension Mailgun.IPPools.Delete {
     public struct Request: Sendable, Codable, Equatable {
         public let ip: String?
         public let poolId: String?
-        
+
         public init(
             ip: String? = nil,
             poolId: String? = nil
@@ -175,16 +175,16 @@ extension Mailgun.IPPools.Delete {
             self.ip = ip
             self.poolId = poolId
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case ip
             case poolId = "pool_id"
         }
     }
-    
+
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
-        
+
         public init(message: String) {
             self.message = message
         }
@@ -201,7 +201,7 @@ extension Mailgun.IPPools.DomainsList {
     public struct Response: Sendable, Decodable, Equatable {
         public let domains: [String]
         public let message: String
-        
+
         public init(
             domains: [String],
             message: String

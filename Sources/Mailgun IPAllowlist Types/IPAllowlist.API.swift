@@ -21,7 +21,7 @@ extension Mailgun.IPAllowlist {
 extension Mailgun.IPAllowlist.API {
     public struct Router: ParserPrinter, Sendable {
         public init() {}
-        
+
         public var body: some URLRouting.Router<Mailgun.IPAllowlist.API> {
             OneOf {
                 URLRouting.Route(.case(Mailgun.IPAllowlist.API.list)) {
@@ -29,21 +29,21 @@ extension Mailgun.IPAllowlist.API {
                     Path.v2
                     Path.ipAllowlist
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.IPAllowlist.API.update)) {
                     Method.put
                     Path.v2
                     Path.ipAllowlist
                     Body(.form(Mailgun.IPAllowlist.UpdateRequest.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.IPAllowlist.API.add)) {
                     Method.post
                     Path.v2
                     Path.ipAllowlist
                     Body(.form(Mailgun.IPAllowlist.AddRequest.self, decoder: .mailgun, encoder: .mailgun))
                 }
-                
+
                 URLRouting.Route(.case(Mailgun.IPAllowlist.API.delete)) {
                     Method.delete
                     Path.v2
@@ -60,7 +60,7 @@ extension Path<PathBuilder.Component<String>> {
     public static let v2: Path<PathBuilder.Component<String>> = Path {
         "v2"
     }
-    
+
     nonisolated(unsafe)
     public static let ipAllowlist: Path<PathBuilder.Component<String>> = Path {
         "ip_allowlist"
