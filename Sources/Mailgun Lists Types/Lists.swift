@@ -189,22 +189,19 @@ extension Mailgun.Lists.List {
             public let name: String?
             public let accessLevel: Mailgun.Lists.AccessLevel?
             public let replyPreference: Mailgun.Lists.ReplyPreference?
-            public let listId: String?
 
             public init(
                 address: EmailAddress? = nil,
                 description: String? = nil,
                 name: String? = nil,
                 accessLevel: Mailgun.Lists.AccessLevel? = nil,
-                replyPreference: Mailgun.Lists.ReplyPreference? = nil,
-                listId: String? = nil
+                replyPreference: Mailgun.Lists.ReplyPreference? = nil
             ) {
                 self.address = address
                 self.name = name
                 self.description = description
                 self.accessLevel = accessLevel
                 self.replyPreference = replyPreference
-                self.listId = listId
             }
 
             enum CodingKeys: String, CodingKey {
@@ -212,8 +209,7 @@ extension Mailgun.Lists.List {
                 case description
                 case name
                 case accessLevel = "access_level"
-                case replyPreference = "reply_reference"
-                case listId = "list-id"
+                case replyPreference = "reply_preference"
             }
         }
 
