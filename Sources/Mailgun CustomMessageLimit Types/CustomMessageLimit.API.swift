@@ -12,7 +12,7 @@ extension Mailgun.CustomMessageLimit {
     @dynamicMemberLookup
     public enum API: Equatable, Sendable {
         case getMonthly
-        case setMonthly(request: Mailgun.CustomMessageLimit.Monthly.SetRequest)
+        case setMonthly(request: Mailgun.CustomMessageLimit.Monthly.Set.Request)
         case deleteMonthly
         case enableAccount
     }
@@ -40,7 +40,11 @@ extension Mailgun.CustomMessageLimit.API {
                     Path.limit
                     Path.custom
                     Path.monthly
-                    Body(.form(Mailgun.CustomMessageLimit.Monthly.SetRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    Parse(.memberwise(Mailgun.CustomMessageLimit.Monthly.Set.Request.init)) {
+                        URLRouting.Query {
+                            Field("limit") { Digits() }
+                        }
+                    }
                 }
                 
                 URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.deleteMonthly)) {
@@ -66,11 +70,6 @@ extension Mailgun.CustomMessageLimit.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    nonisolated(unsafe)
-    public static let v5: Path<PathBuilder.Component<String>> = Path {
-        "v5"
-    }
-    
     nonisolated(unsafe)
     public static let accounts: Path<PathBuilder.Component<String>> = Path {
         "accounts"

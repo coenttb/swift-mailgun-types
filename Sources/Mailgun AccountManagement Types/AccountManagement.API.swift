@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 24/12/2024.
 //
 
-import EmailAddress
 import Mailgun_Types_Shared
 
 extension Mailgun.AccountManagement {
@@ -16,11 +15,11 @@ extension Mailgun.AccountManagement {
         case getHttpSigningKey
         case regenerateHttpSigningKey
         case getSandboxAuthRecipients
-        case addSandboxAuthRecipient(email: EmailAddress)
-        case deleteSandboxAuthRecipient(email: EmailAddress)
+        case addSandboxAuthRecipient(request: Mailgun.AccountManagement.Sandbox.Auth.Recipients.Add.Request)
+        case deleteSandboxAuthRecipient(email: String)
         case resendActivationEmail
         case getSAMLOrganization
-        case createSAMLOrganization(request: Mailgun.AccountManagement.SAML.CreateRequest)
+        case addSAMLOrganization(request: Mailgun.AccountManagement.SAML.Organization.Add.Request)
     }
 }
 
@@ -34,7 +33,14 @@ extension Mailgun.AccountManagement.API {
                     Method.put
                     Path { "v5" }
                     Path.accounts
-                    Body(.form(Mailgun.AccountManagement.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
+                    Parse(.memberwise(Mailgun.AccountManagement.Update.Request.init)) {
+                        URLRouting.Query {
+                            Optionally { Field("name") { Parse(.string) } }
+                            Optionally { Field("inactive_session_timeout") { Digits() } }
+                            Optionally { Field("absolute_session_timeout") { Digits() } }
+                            Optionally { Field("logout_redirect_url") { Parse(.string) } }
+                        }
+                    }
                 }
                 
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.getHttpSigningKey)) {
@@ -63,8 +69,10 @@ extension Mailgun.AccountManagement.API {
                     Path { "v5" }
                     Path.sandbox
                     Path.authRecipients
-                    Query {
-                        Field("email") { Parse(.string.representing(EmailAddress.self)) }
+                    Parse(.memberwise(Mailgun.AccountManagement.Sandbox.Auth.Recipients.Add.Request.init)) {
+                        URLRouting.Query {
+                            Field("email") { Parse(.string) }
+                        }
                     }
                 }
                 
@@ -73,7 +81,7 @@ extension Mailgun.AccountManagement.API {
                     Path { "v5" }
                     Path.sandbox
                     Path.authRecipients
-                    Path { Parse(.string.representing(EmailAddress.self)) }
+                    Path { Parse(.string) }
                 }
                 
                 URLRouting.Route(.case(Mailgun.AccountManagement.API.resendActivationEmail)) {
@@ -90,12 +98,17 @@ extension Mailgun.AccountManagement.API {
                     Path.samlOrg
                 }
                 
-                URLRouting.Route(.case(Mailgun.AccountManagement.API.createSAMLOrganization)) {
+                URLRouting.Route(.case(Mailgun.AccountManagement.API.addSAMLOrganization)) {
                     Method.post
                     Path { "v5" }
                     Path.accounts
                     Path.samlOrg
-                    Body(.form(Mailgun.AccountManagement.SAML.CreateRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    Parse(.memberwise(Mailgun.AccountManagement.SAML.Organization.Add.Request.init)) {
+                        URLRouting.Query {
+                            Field("user_id") { Parse(.string) }
+                            Optionally { Field("domain") { Parse(.string) } }
+                        }
+                    }
                 }
             }
         }
