@@ -145,15 +145,62 @@ extension Mailgun.Domains.DomainKeys.Create {
     }
     
     public struct Response: Sendable, Codable, Equatable {
-        public let message: String
-        public let key: Mailgun.Domains.DomainKeys.Key?
+        public let signingDomain: String?
+        public let selector: String?
+        public let dnsRecord: DnsRecord?
+        public let message: String?
         
         public init(
-            message: String,
-            key: Mailgun.Domains.DomainKeys.Key? = nil
+            signingDomain: String? = nil,
+            selector: String? = nil,
+            dnsRecord: DnsRecord? = nil,
+            message: String? = nil
         ) {
+            self.signingDomain = signingDomain
+            self.selector = selector
+            self.dnsRecord = dnsRecord
             self.message = message
-            self.key = key
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case signingDomain = "signing_domain"
+            case selector
+            case dnsRecord = "dns_record"
+            case message
+        }
+        
+        public struct DnsRecord: Sendable, Codable, Equatable {
+            public let isActive: Bool?
+            public let cached: [String]?
+            public let name: String?
+            public let recordType: String?
+            public let valid: String?
+            public let value: String?
+            
+            public init(
+                isActive: Bool? = nil,
+                cached: [String]? = nil,
+                name: String? = nil,
+                recordType: String? = nil,
+                valid: String? = nil,
+                value: String? = nil
+            ) {
+                self.isActive = isActive
+                self.cached = cached
+                self.name = name
+                self.recordType = recordType
+                self.valid = valid
+                self.value = value
+            }
+            
+            private enum CodingKeys: String, CodingKey {
+                case isActive = "is_active"
+                case cached
+                case name
+                case recordType = "record_type"
+                case valid
+                case value
+            }
         }
     }
 }
