@@ -16,22 +16,26 @@ extension Mailgun.Credentials {
     public struct Credential: Sendable, Codable, Equatable {
         public let login: String
         public let mailbox: String
-        public let createdAt: Date
+        public let createdAt: String
+        public let sizeBytes: String?
         
         public init(
             login: String,
             mailbox: String,
-            createdAt: Date
+            createdAt: String,
+            sizeBytes: String? = nil
         ) {
             self.login = login
             self.mailbox = mailbox
             self.createdAt = createdAt
+            self.sizeBytes = sizeBytes
         }
         
         private enum CodingKeys: String, CodingKey {
             case login
             case mailbox
             case createdAt = "created_at"
+            case sizeBytes = "size_bytes"
         }
     }
 }
@@ -41,6 +45,19 @@ extension Mailgun.Credentials {
 }
 
 extension Mailgun.Credentials.List {
+    public struct Request: Sendable, Codable, Equatable {
+        public let skip: Int?
+        public let limit: Int?
+        
+        public init(
+            skip: Int? = nil,
+            limit: Int? = nil
+        ) {
+            self.skip = skip
+            self.limit = limit
+        }
+    }
+    
     public struct Response: Sendable, Decodable, Equatable {
         public let totalCount: Int
         public let items: [Mailgun.Credentials.Credential]
@@ -66,23 +83,37 @@ extension Mailgun.Credentials {
 
 extension Mailgun.Credentials.Create {
     public struct Request: Sendable, Codable, Equatable {
-        public let login: String
-        public let password: String
+        public let login: String?
+        public let mailbox: String?
+        public let password: String?
+        public let system: Bool?
         
         public init(
-            login: String,
-            password: String
+            login: String? = nil,
+            mailbox: String? = nil,
+            password: String? = nil,
+            system: Bool? = nil
         ) {
             self.login = login
+            self.mailbox = mailbox
             self.password = password
+            self.system = system
         }
     }
     
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
+        public let note: String?
+        public let credentials: [String: String]?
         
-        public init(message: String) {
+        public init(
+            message: String,
+            note: String? = nil,
+            credentials: [String: String]? = nil
+        ) {
             self.message = message
+            self.note = note
+            self.credentials = credentials
         }
     }
 }
@@ -93,18 +124,26 @@ extension Mailgun.Credentials {
 
 extension Mailgun.Credentials.Update {
     public struct Request: Sendable, Codable, Equatable {
-        public let password: String
+        public let password: String?
         
-        public init(password: String) {
+        public init(password: String? = nil) {
             self.password = password
         }
     }
     
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
+        public let note: String?
+        public let credentials: [String: String]?
         
-        public init(message: String) {
+        public init(
+            message: String,
+            note: String? = nil,
+            credentials: [String: String]? = nil
+        ) {
             self.message = message
+            self.note = note
+            self.credentials = credentials
         }
     }
 }
@@ -141,18 +180,26 @@ extension Mailgun.Credentials.Mailbox {
 
 extension Mailgun.Credentials.Mailbox.Update {
     public struct Request: Sendable, Codable, Equatable {
-        public let password: String
+        public let password: String?
         
-        public init(password: String) {
+        public init(password: String? = nil) {
             self.password = password
         }
     }
     
     public struct Response: Sendable, Decodable, Equatable {
         public let message: String
+        public let note: String?
+        public let credentials: [String: String]?
         
-        public init(message: String) {
+        public init(
+            message: String,
+            note: String? = nil,
+            credentials: [String: String]? = nil
+        ) {
             self.message = message
+            self.note = note
+            self.credentials = credentials
         }
     }
 }

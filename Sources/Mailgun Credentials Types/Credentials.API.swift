@@ -11,7 +11,7 @@ extension Mailgun.Credentials {
     @CasePathable
     @dynamicMemberLookup
     public enum API: Equatable, Sendable {
-        case list(domain: Domain)
+        case list(domain: Domain, request: Mailgun.Credentials.List.Request?)
         case create(domain: Domain, request: Mailgun.Credentials.Create.Request)
         case deleteAll(domain: Domain)
         case update(domain: Domain, login: String, request: Mailgun.Credentials.Update.Request)
@@ -32,6 +32,18 @@ extension Mailgun.Credentials.API {
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.credentials
+                    Optionally {
+                        Parse(.memberwise(Mailgun.Credentials.List.Request.init)) {
+                            URLRouting.Query {
+                                Optionally {
+                                    Field("skip") { Digits() }
+                                }
+                                Optionally {
+                                    Field("limit") { Digits() }
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 URLRouting.Route(.case(Mailgun.Credentials.API.create)) {

@@ -12,7 +12,7 @@ extension Mailgun.Credentials {
     @DependencyClient
     public struct Client: Sendable {
         @DependencyEndpoint
-        public var list: @Sendable (_ domain: Domain) async throws -> Mailgun.Credentials.List.Response
+        public var list: @Sendable (_ domain: Domain, _ request: Mailgun.Credentials.List.Request?) async throws -> Mailgun.Credentials.List.Response
         
         @DependencyEndpoint
         public var create: @Sendable (_ domain: Domain, _ request: Mailgun.Credentials.Create.Request) async throws -> Mailgun.Credentials.Create.Response
