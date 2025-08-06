@@ -47,13 +47,19 @@ extension Mailgun.IPPools {
     }
 }
 
+// MARK: - List Operation
+
 extension Mailgun.IPPools {
-    public struct ListResponse: Sendable, Decodable, Equatable {
-        public let ipPools: [IPPool]
+    public enum List {}
+}
+
+extension Mailgun.IPPools.List {
+    public struct Response: Sendable, Decodable, Equatable {
+        public let ipPools: [Mailgun.IPPools.IPPool]
         public let message: String
         
         public init(
-            ipPools: [IPPool],
+            ipPools: [Mailgun.IPPools.IPPool],
             message: String
         ) {
             self.ipPools = ipPools
@@ -67,8 +73,14 @@ extension Mailgun.IPPools {
     }
 }
 
+// MARK: - Create Operation
+
 extension Mailgun.IPPools {
-    public struct CreateRequest: Sendable, Codable, Equatable {
+    public enum Create {}
+}
+
+extension Mailgun.IPPools.Create {
+    public struct Request: Sendable, Codable, Equatable {
         public let name: String
         public let description: String
         public let ips: [String]
@@ -84,7 +96,7 @@ extension Mailgun.IPPools {
         }
     }
     
-    public struct CreateResponse: Sendable, Decodable, Equatable {
+    public struct Response: Sendable, Decodable, Equatable {
         public let poolId: String
         public let message: String
         
@@ -103,8 +115,14 @@ extension Mailgun.IPPools {
     }
 }
 
+// MARK: - Update Operation
+
 extension Mailgun.IPPools {
-    public struct UpdateRequest: Sendable, Codable, Equatable {
+    public enum Update {}
+}
+
+extension Mailgun.IPPools.Update {
+    public struct Request: Sendable, Codable, Equatable {
         public let name: String?
         public let description: String?
         public let addIps: [String]?
@@ -130,7 +148,7 @@ extension Mailgun.IPPools {
         }
     }
     
-    public struct UpdateResponse: Sendable, Decodable, Equatable {
+    public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         
         public init(message: String) {
@@ -139,8 +157,14 @@ extension Mailgun.IPPools {
     }
 }
 
+// MARK: - Delete Operation
+
 extension Mailgun.IPPools {
-    public struct DeleteRequest: Sendable, Codable, Equatable {
+    public enum Delete {}
+}
+
+extension Mailgun.IPPools.Delete {
+    public struct Request: Sendable, Codable, Equatable {
         public let ip: String?
         public let poolId: String?
         
@@ -158,7 +182,7 @@ extension Mailgun.IPPools {
         }
     }
     
-    public struct DeleteResponse: Sendable, Decodable, Equatable {
+    public struct Response: Sendable, Decodable, Equatable {
         public let message: String
         
         public init(message: String) {
@@ -167,8 +191,14 @@ extension Mailgun.IPPools {
     }
 }
 
+// MARK: - Domains List Operation
+
 extension Mailgun.IPPools {
-    public struct DomainsListResponse: Sendable, Decodable, Equatable {
+    public enum DomainsList {}
+}
+
+extension Mailgun.IPPools.DomainsList {
+    public struct Response: Sendable, Decodable, Equatable {
         public let domains: [String]
         public let message: String
         

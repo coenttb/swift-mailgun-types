@@ -11,7 +11,7 @@ extension Mailgun.DynamicIPPools {
     @CasePathable
     @dynamicMemberLookup
     public enum API: Equatable, Sendable {
-        case listHistory(request: Mailgun.DynamicIPPools.HistoryListRequest)
+        case listHistory(request: Mailgun.DynamicIPPools.HistoryList.Request)
         case removeOverride(domain: String)
     }
 }
@@ -27,7 +27,7 @@ extension Mailgun.DynamicIPPools.API {
                     Path { "v1" }
                     Path.dynamicPools
                     Path.history
-                    Parse(.memberwise(Mailgun.DynamicIPPools.HistoryListRequest.init)) {
+                    Parse(.memberwise(Mailgun.DynamicIPPools.HistoryList.Request.init)) {
                         URLRouting.Query {
                             Optionally {
                                 Field("Limit") { Digits() }

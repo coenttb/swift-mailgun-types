@@ -12,9 +12,9 @@ extension Mailgun.DynamicIPPools {
     @DependencyClient
     public struct Client: Sendable {
         @DependencyEndpoint
-        public var listHistory: @Sendable (_ request: Mailgun.DynamicIPPools.HistoryListRequest) async throws -> Mailgun.DynamicIPPools.HistoryListResponse
+        public var listHistory: @Sendable (_ request: Mailgun.DynamicIPPools.HistoryList.Request) async throws -> Mailgun.DynamicIPPools.HistoryList.Response
         
         @DependencyEndpoint
-        public var removeOverride: @Sendable (_ domain: String) async throws -> Mailgun.DynamicIPPools.RemoveOverrideResponse
+        public var removeOverride: @Sendable (_ domain: String) async throws -> Mailgun.DynamicIPPools.RemoveOverride.Response
     }
 }
