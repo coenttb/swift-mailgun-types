@@ -7,9 +7,12 @@
 
 import EmailAddress
 import Mailgun_Types_Shared
+
 extension Mailgun.Suppressions {
     public enum Unsubscribe {}
 }
+
+// MARK: - Core Types
 
 extension Mailgun.Suppressions.Unsubscribe {
     public struct Record: Sendable, Codable, Equatable {
@@ -35,6 +38,8 @@ extension Mailgun.Suppressions.Unsubscribe {
     }
 }
 
+// MARK: - Import
+
 extension Mailgun.Suppressions.Unsubscribe {
     public enum Import {}
 }
@@ -49,11 +54,44 @@ extension Mailgun.Suppressions.Unsubscribe.Import {
     }
 }
 
+// MARK: - Get
+
+extension Mailgun.Suppressions.Unsubscribe {
+    public enum Get {}
+}
+
+extension Mailgun.Suppressions.Unsubscribe.Get {
+    public struct Response: Sendable, Codable, Equatable {
+        public let address: EmailAddress
+        public let tags: [String]
+        public let createdAt: String
+        
+        public init(
+            address: EmailAddress,
+            tags: [String],
+            createdAt: String
+        ) {
+            self.address = address
+            self.tags = tags
+            self.createdAt = createdAt
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case address
+            case tags
+            case createdAt = "created_at"
+        }
+    }
+}
+
+// MARK: - Create
+
 extension Mailgun.Suppressions.Unsubscribe {
     public enum Create {}
 }
 
 extension Mailgun.Suppressions.Unsubscribe.Create {
+    // For single record creation via form data
     public struct Request: Sendable, Codable, Equatable {
         public let address: EmailAddress
         public let tags: [String]?
@@ -85,6 +123,8 @@ extension Mailgun.Suppressions.Unsubscribe.Create {
     }
 }
 
+// MARK: - Delete
+
 extension Mailgun.Suppressions.Unsubscribe {
     public enum Delete {}
 }
@@ -104,19 +144,25 @@ extension Mailgun.Suppressions.Unsubscribe.Delete {
     }
 }
 
-extension Mailgun.Suppressions.Unsubscribe.Delete {
-    public enum All {
-        public struct Response: Sendable, Codable, Equatable {
-            public let message: String
+// MARK: - Delete All
 
-            public init(
-                message: String
-            ) {
-                self.message = message
-            }
+extension Mailgun.Suppressions.Unsubscribe {
+    public enum DeleteAll {}
+}
+
+extension Mailgun.Suppressions.Unsubscribe.DeleteAll {
+    public struct Response: Sendable, Codable, Equatable {
+        public let message: String
+
+        public init(
+            message: String
+        ) {
+            self.message = message
         }
     }
 }
+
+// MARK: - List
 
 extension Mailgun.Suppressions.Unsubscribe {
     public enum List {}
