@@ -413,7 +413,7 @@ import Mailgun_Types
 struct MyFeature {
     @Dependency(Mailgun.Client.self) var mailgun
     
-    func sendWelcomeEmail(to email: String) async throws {
+    func sendWelcomeEmail(to email: EmailAddress) async throws {
         let request = Mailgun.Messages.Send.Request(
             from: .init("noreply@company.com"),
             to: [.init(email)],
