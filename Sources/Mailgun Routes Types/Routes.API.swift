@@ -30,7 +30,37 @@ extension Mailgun.Routes.API {
                     Method.post
                     Path { "v3" }
                     Path.routes
-                    Body(.form(Mailgun.Routes.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
+                    Body(.form(Mailgun.Routes.Create.Request.self, decoder: .mailgun, encoder: .mailgunRoutes))
+                }
+
+                URLRouting.Route(.case(Mailgun.Routes.API.update)) {
+                    let multipartFormCoding = URLFormCoding.Multipart.Conversion(
+                        Mailgun.Routes.Update.Request.self,
+                        decoder: .mailgun,
+                        encoder: .mailgunRoutes  // Use the encoder with accumulateValues for arrays
+                    )
+                    Headers {
+                        Field.contentType { multipartFormCoding.contentType }
+                    }
+                    Method.put
+                    Path { "v3" }
+                    Path.routes
+                    Path { Parse(.string) }
+                    Body(multipartFormCoding)
+                }
+
+                URLRouting.Route(.case(Mailgun.Routes.API.delete)) {
+                    Method.delete
+                    Path { "v3" }
+                    Path.routes
+                    Path { Parse(.string) }
+                }
+
+                URLRouting.Route(.case(Mailgun.Routes.API.get)) {
+                    Method.get
+                    Path { "v3" }
+                    Path.routes
+                    Path { Parse(.string) }
                 }
 
                 URLRouting.Route(.case(Mailgun.Routes.API.list)) {
@@ -45,28 +75,6 @@ extension Mailgun.Routes.API {
                             Field("skip") { Digits() }
                         }
                     }
-                }
-
-                URLRouting.Route(.case(Mailgun.Routes.API.get)) {
-                    Method.get
-                    Path { "v3" }
-                    Path.routes
-                    Path { Parse(.string) }
-                }
-
-                URLRouting.Route(.case(Mailgun.Routes.API.update)) {
-                    Method.put
-                    Path { "v3" }
-                    Path.routes
-                    Path { Parse(.string) }
-                    Body(.form(Mailgun.Routes.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
-                }
-
-                URLRouting.Route(.case(Mailgun.Routes.API.delete)) {
-                    Method.delete
-                    Path { "v3" }
-                    Path.routes
-                    Path { Parse(.string) }
                 }
 
                 URLRouting.Route(.case(Mailgun.Routes.API.match)) {

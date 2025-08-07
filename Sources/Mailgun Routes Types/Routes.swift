@@ -163,15 +163,40 @@ extension Mailgun.Routes.Update {
     }
 
     public struct Response: Sendable, Decodable, Equatable {
+        public let id: String
+        public let priority: Int
+        public let description: String
+        public let expression: String
+        public let actions: [String]
+        public let createdAt: Date
         public let message: String
-        public let route: Mailgun.Routes.Route
 
         public init(
-            message: String,
-            route: Mailgun.Routes.Route
+            id: String,
+            priority: Int,
+            description: String,
+            expression: String,
+            actions: [String],
+            createdAt: Date,
+            message: String
         ) {
+            self.id = id
+            self.priority = priority
+            self.description = description
+            self.expression = expression
+            self.actions = actions
+            self.createdAt = createdAt
             self.message = message
-            self.route = route
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case id
+            case priority
+            case description
+            case expression
+            case actions
+            case createdAt = "created_at"
+            case message
         }
     }
 }

@@ -40,6 +40,14 @@ extension Form.Encoder {
             arrayEncodingStrategy: .brackets
         )
     }
+    
+    public static var mailgunRoutes: Form.Encoder {
+        return Form.Encoder(
+            dataEncodingStrategy: .base64,
+            dateEncodingStrategy: .init { rfc2822Formatter.string(from: $0) },
+            arrayEncodingStrategy: .accumulateValues
+        )
+    }
 }
 
 private let rfc2822Formatter: DateFormatter = {
