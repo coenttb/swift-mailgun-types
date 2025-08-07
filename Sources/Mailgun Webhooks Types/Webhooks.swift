@@ -6,9 +6,12 @@
 //
 
 import Mailgun_Types_Shared
+
 extension Mailgun {
     public enum Webhooks {}
 }
+
+// MARK: - Core Types
 
 extension Mailgun.Webhooks {
     public struct Webhook: Sendable, Codable, Equatable {
@@ -18,10 +21,8 @@ extension Mailgun.Webhooks {
             self.urls = urls
         }
     }
-}
-
-extension Mailgun.Webhooks.Webhook {
-    public enum Variant: String, Sendable, Codable, Equatable, CaseIterable, CodingKey {
+    
+    public enum WebhookType: String, Sendable, Codable, Equatable, CaseIterable {
         case accepted = "accepted"
         case delivered = "delivered"
         case opened = "opened"
@@ -30,54 +31,25 @@ extension Mailgun.Webhooks.Webhook {
         case complained = "complained"
         case permanentFail = "permanent_fail"
         case temporaryFail = "temporary_fail"
-
-        public var stringValue: String { rawValue }
-        public var intValue: Int? { nil }
-
-        public init?(stringValue: String) {
-            self.init(rawValue: stringValue)
-        }
-
-        public init?(intValue: Int) {
-            return nil
-        }
     }
 }
 
-extension Mailgun.Webhooks.Client {
+// MARK: - List
+
+extension Mailgun.Webhooks {
+    public enum List {}
+}
+
+extension Mailgun.Webhooks.List {
     public struct Response: Sendable, Codable, Equatable {
-        public let message: String
-        public let webhook: Mailgun.Webhooks.Webhook
-
-        public init(message: String, webhook: Mailgun.Webhooks.Webhook) {
-            self.message = message
-            self.webhook = webhook
-        }
-    }
-}
-
-extension Mailgun.Webhooks.Client.Response {
-    public struct Webhook: Sendable, Codable, Equatable {
-        public let webhook: Mailgun.Webhooks.Webhook
-
-        public init(webhook: Mailgun.Webhooks.Webhook) {
-            self.webhook = webhook
-        }
-    }
-}
-
-extension Mailgun.Webhooks.Client.Response {
-    public struct List: Sendable, Codable, Equatable {
-        public let webhooks: List.All
-
-        public init(webhooks: List.All) {
+        public let webhooks: Webhooks
+        
+        public init(webhooks: Webhooks) {
             self.webhooks = webhooks
         }
     }
-}
-
-extension Mailgun.Webhooks.Client.Response.List {
-    public struct All: Sendable, Codable, Equatable {
+    
+    public struct Webhooks: Sendable, Codable, Equatable {
         public let accepted: Mailgun.Webhooks.Webhook?
         public let delivered: Mailgun.Webhooks.Webhook?
         public let opened: Mailgun.Webhooks.Webhook?
@@ -86,7 +58,7 @@ extension Mailgun.Webhooks.Client.Response.List {
         public let complained: Mailgun.Webhooks.Webhook?
         public let temporary_fail: Mailgun.Webhooks.Webhook?
         public let permanent_fail: Mailgun.Webhooks.Webhook?
-
+        
         public init(
             accepted: Mailgun.Webhooks.Webhook? = nil,
             delivered: Mailgun.Webhooks.Webhook? = nil,
@@ -106,9 +78,9 @@ extension Mailgun.Webhooks.Client.Response.List {
             self.temporary_fail = temporary_fail
             self.permanent_fail = permanent_fail
         }
-
-        public subscript(_ variant: Mailgun.Webhooks.Webhook.Variant) -> Mailgun.Webhooks.Webhook? {
-            switch variant {
+        
+        public subscript(_ type: Mailgun.Webhooks.WebhookType) -> Mailgun.Webhooks.Webhook? {
+            switch type {
             case .accepted: return accepted
             case .delivered: return delivered
             case .opened: return opened
@@ -118,6 +90,103 @@ extension Mailgun.Webhooks.Client.Response.List {
             case .temporaryFail: return temporary_fail
             case .permanentFail: return permanent_fail
             }
+        }
+    }
+}
+
+// MARK: - Get
+
+extension Mailgun.Webhooks {
+    public enum Get {}
+}
+
+extension Mailgun.Webhooks.Get {
+    public struct Response: Sendable, Codable, Equatable {
+        public let webhook: Mailgun.Webhooks.Webhook
+        
+        public init(webhook: Mailgun.Webhooks.Webhook) {
+            self.webhook = webhook
+        }
+    }
+}
+
+// MARK: - Create
+
+extension Mailgun.Webhooks {
+    public enum Create {}
+}
+
+extension Mailgun.Webhooks.Create {
+    public struct Request: Sendable, Codable, Equatable {
+        public let id: Mailgun.Webhooks.WebhookType
+        public let url: [String]
+        
+        public init(id: Mailgun.Webhooks.WebhookType, url: [String]) {
+            self.id = id
+            self.url = url
+        }
+        
+        public init(id: Mailgun.Webhooks.WebhookType, url: String) {
+            self.id = id
+            self.url = [url]
+        }
+    }
+    
+    public struct Response: Sendable, Codable, Equatable {
+        public let message: String
+        public let webhook: Mailgun.Webhooks.Webhook
+        
+        public init(message: String, webhook: Mailgun.Webhooks.Webhook) {
+            self.message = message
+            self.webhook = webhook
+        }
+    }
+}
+
+// MARK: - Update
+
+extension Mailgun.Webhooks {
+    public enum Update {}
+}
+
+extension Mailgun.Webhooks.Update {
+    public struct Request: Sendable, Codable, Equatable {
+        public let url: [String]
+        
+        public init(url: [String]) {
+            self.url = url
+        }
+        
+        public init(url: String) {
+            self.url = [url]
+        }
+    }
+    
+    public struct Response: Sendable, Codable, Equatable {
+        public let message: String
+        public let webhook: Mailgun.Webhooks.Webhook
+        
+        public init(message: String, webhook: Mailgun.Webhooks.Webhook) {
+            self.message = message
+            self.webhook = webhook
+        }
+    }
+}
+
+// MARK: - Delete
+
+extension Mailgun.Webhooks {
+    public enum Delete {}
+}
+
+extension Mailgun.Webhooks.Delete {
+    public struct Response: Sendable, Codable, Equatable {
+        public let message: String
+        public let webhook: Mailgun.Webhooks.Webhook
+        
+        public init(message: String, webhook: Mailgun.Webhooks.Webhook) {
+            self.message = message
+            self.webhook = webhook
         }
     }
 }
