@@ -12,39 +12,39 @@ extension Mailgun.Templates {
     @DependencyClient
     public struct Client: Sendable {
         @DependencyEndpoint
-        public var create: @Sendable (_ request: Mailgun.Templates.Template.Create.Request) async throws -> Mailgun.Templates.Template.Create.Response
-
+        public var list: @Sendable (_ request: Mailgun.Templates.List.Request?) async throws -> Mailgun.Templates.List.Response
+        
         @DependencyEndpoint
-        public var list: @Sendable (_ request: Mailgun.Templates.Template.List.Request) async throws -> Mailgun.Templates.Template.List.Response
-
+        public var create: @Sendable (_ request: Mailgun.Templates.Create.Request) async throws -> Mailgun.Templates.Create.Response
+        
         @DependencyEndpoint
-        public var get: @Sendable (_ templateId: String, _ active: String) async throws -> Mailgun.Templates.Template.Get.Response
-
+        public var deleteAll: @Sendable () async throws -> Mailgun.Templates.DeleteAll.Response
+        
         @DependencyEndpoint
-        public var update: @Sendable (_ templateId: String, _ request: Mailgun.Templates.Template.Update.Request) async throws -> Mailgun.Templates.Template.Update.Response
-
+        public var versions: @Sendable (_ templateName: String, _ request: Mailgun.Templates.Versions.Request?) async throws -> Mailgun.Templates.Versions.Response
+        
         @DependencyEndpoint
-        public var delete: @Sendable (_ templateId: String) async throws -> Mailgun.Templates.Template.Delete.Response
-
+        public var createVersion: @Sendable (_ templateName: String, _ request: Mailgun.Templates.Version.Create.Request) async throws -> Mailgun.Templates.Version.Create.Response
+        
         @DependencyEndpoint
-        public var deleteAll: @Sendable () async throws -> Mailgun.Templates.Template.Delete.All.Response
-
+        public var get: @Sendable (_ templateName: String, _ request: Mailgun.Templates.Get.Request?) async throws -> Mailgun.Templates.Get.Response
+        
         @DependencyEndpoint
-        public var versions: @Sendable (_ templateName: String, _ page: Page, _ limit: Int?, _ p: String?) async throws -> Mailgun.Templates.Template.Versions.Response
-
+        public var update: @Sendable (_ templateName: String, _ request: Mailgun.Templates.Update.Request) async throws -> Mailgun.Templates.Update.Response
+        
         @DependencyEndpoint
-        public var createVersion: @Sendable (_ templateId: String, _ request: Mailgun.Templates.Version.Create.Request) async throws -> Mailgun.Templates.Version.Create.Response
-
+        public var delete: @Sendable (_ templateName: String) async throws -> Mailgun.Templates.Delete.Response
+        
         @DependencyEndpoint
-        public var getVersion: @Sendable (_ templateId: String, _ versionId: String) async throws -> Mailgun.Templates.Version.Get.Response
-
+        public var getVersion: @Sendable (_ templateName: String, _ versionName: String) async throws -> Mailgun.Templates.Version.Get.Response
+        
         @DependencyEndpoint
-        public var updateVersion: @Sendable (_ templateId: String, _ versionId: String, _ request: Mailgun.Templates.Version.Update.Request) async throws -> Mailgun.Templates.Version.Update.Response
-
+        public var updateVersion: @Sendable (_ templateName: String, _ versionName: String, _ request: Mailgun.Templates.Version.Update.Request) async throws -> Mailgun.Templates.Version.Update.Response
+        
         @DependencyEndpoint
-        public var deleteVersion: @Sendable (_ templateId: String, _ versionId: String) async throws -> Mailgun.Templates.Version.Delete.Response
-
+        public var deleteVersion: @Sendable (_ templateName: String, _ versionName: String) async throws -> Mailgun.Templates.Version.Delete.Response
+        
         @DependencyEndpoint
-        public var copyVersion: @Sendable (_ templateName: String, _ versionName: String, _ newVersionName: String, _ comment: String?) async throws -> Mailgun.Templates.Version.Copy.Response
+        public var copyVersion: @Sendable (_ templateName: String, _ versionName: String, _ newVersionName: String, _ request: Mailgun.Templates.Version.Copy.Request?) async throws -> Mailgun.Templates.Version.Copy.Response
     }
 }
