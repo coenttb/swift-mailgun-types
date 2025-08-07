@@ -12,15 +12,15 @@ extension Mailgun.Subaccounts {
     @dynamicMemberLookup
     public enum API: Equatable, Sendable {
         case get(subaccountId: String)
-        case list
+        case list(request: Mailgun.Subaccounts.List.Request?)
         case create(request: Mailgun.Subaccounts.Create.Request)
-        case delete(subaccountId: String)
-        case disable(subaccountId: String)
+        case delete(subaccountId: String)  // Note: subaccountId goes in header, not path
+        case disable(subaccountId: String, request: Mailgun.Subaccounts.Disable.Request?)
         case enable(subaccountId: String)
         case getCustomLimit(subaccountId: String)
-        case updateCustomLimit(subaccountId: String, request: Mailgun.Subaccounts.CustomLimit.UpdateRequest)
+        case updateCustomLimit(subaccountId: String, limit: Double)
         case deleteCustomLimit(subaccountId: String)
-        case updateFeatures(subaccountId: String, request: Mailgun.Subaccounts.Features.UpdateRequest)
+        case updateFeatures(subaccountId: String, request: Mailgun.Subaccounts.Features.Update.Request)
     }
 }
 
@@ -43,6 +43,30 @@ extension Mailgun.Subaccounts.API {
                     Path { "v5" }
                     Path.accounts
                     Path.subaccounts
+                    Optionally {
+                        Parse(.memberwise(Mailgun.Subaccounts.List.Request.init)) {
+                            URLRouting.Query {
+                                Optionally {
+                                    Field("sort") { Parse(.string.representing(Mailgun.Subaccounts.List.Request.Sort.self)) }
+                                }
+                                Optionally {
+                                    Field("filter") { Parse(.string) }
+                                }
+                                Optionally {
+                                    Field("limit") { Digits() }
+                                }
+                                Optionally {
+                                    Field("skip") { Digits() }
+                                }
+                                Optionally {
+                                    Field("enabled") { Bool.parser() }
+                                }
+                                Optionally {
+                                    Field("closed") { Bool.parser() }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.create)) {
@@ -50,19 +74,23 @@ extension Mailgun.Subaccounts.API {
                     Path { "v5" }
                     Path.accounts
                     Path.subaccounts
-                    Body(.form(Mailgun.Subaccounts.Create.Request.self, decoder: .mailgun, encoder: .mailgun))
+                    Parse(.memberwise(Mailgun.Subaccounts.Create.Request.init)) {
+                        URLRouting.Query {
+                            Field("name") { Parse(.string) }
+                        }
+                    }
                 }
 
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.delete)) {
+                    Method.delete
+                    Path { "v5" }
+                    Path.accounts
+                    Path.subaccounts
                     Headers {
                         Field("X-Mailgun-On-Behalf-Of") {
                             Parse(.string)
                         }
                     }
-                    Method.delete
-                    Path { "v5" }
-                    Path.accounts
-                    Path.subaccounts
                 }
 
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.disable)) {
@@ -72,6 +100,18 @@ extension Mailgun.Subaccounts.API {
                     Path.subaccounts
                     Path { Parse(.string) }
                     Path.disable
+                    Optionally {
+                        Parse(.memberwise(Mailgun.Subaccounts.Disable.Request.init)) {
+                            URLRouting.Query {
+                                Optionally {
+                                    Field("reason") { Parse(.string) }
+                                }
+                                Optionally {
+                                    Field("note") { Parse(.string) }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.enable)) {
@@ -103,7 +143,9 @@ extension Mailgun.Subaccounts.API {
                     Path.limit
                     Path.custom
                     Path.monthly
-                    Body(.form(Mailgun.Subaccounts.CustomLimit.UpdateRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    URLRouting.Query {
+                        Field("limit") { Double.parser() }
+                    }
                 }
 
                 URLRouting.Route(.case(Mailgun.Subaccounts.API.deleteCustomLimit)) {
@@ -124,7 +166,7 @@ extension Mailgun.Subaccounts.API {
                     Path.subaccounts
                     Path { Parse(.string) }
                     Path.features
-                    Body(.form(Mailgun.Subaccounts.Features.UpdateRequest.self, decoder: .mailgun, encoder: .mailgun))
+                    Body(.form(Mailgun.Subaccounts.Features.Update.Request.self, decoder: .mailgun, encoder: .mailgun))
                 }
             }
         }

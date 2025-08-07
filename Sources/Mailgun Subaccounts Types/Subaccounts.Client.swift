@@ -11,33 +11,33 @@ extension Mailgun.Subaccounts {
     @DependencyClient
     public struct Client: Sendable {
         @DependencyEndpoint
-        public var get: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.Subaccount
+        public var get: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.Get.Response
 
         @DependencyEndpoint
-        public var list: @Sendable () async throws -> Mailgun.Subaccounts.List.Response
+        public var list: @Sendable (_ request: Mailgun.Subaccounts.List.Request?) async throws -> Mailgun.Subaccounts.List.Response
 
         @DependencyEndpoint
-        public var create: @Sendable (_ request: Mailgun.Subaccounts.Create.Request) async throws -> Mailgun.Subaccounts.Subaccount
+        public var create: @Sendable (_ request: Mailgun.Subaccounts.Create.Request) async throws -> Mailgun.Subaccounts.Create.Response
 
         @DependencyEndpoint
         public var delete: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.Delete.Response
 
         @DependencyEndpoint
-        public var disable: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.Disable.Response
+        public var disable: @Sendable (_ subaccountId: String, _ request: Mailgun.Subaccounts.Disable.Request?) async throws -> Mailgun.Subaccounts.Disable.Response
 
         @DependencyEndpoint
         public var enable: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.Enable.Response
 
         @DependencyEndpoint
-        public var getCustomLimit: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.CustomLimit.Response
+        public var getCustomLimit: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.CustomLimit.Get.Response
 
         @DependencyEndpoint
-        public var updateCustomLimit: @Sendable (_ subaccountId: String, _ request: Mailgun.Subaccounts.CustomLimit.UpdateRequest) async throws -> Mailgun.Subaccounts.CustomLimit.Response
+        public var updateCustomLimit: @Sendable (_ subaccountId: String, _ limit: Double) async throws -> Mailgun.Subaccounts.CustomLimit.Update.Response
 
         @DependencyEndpoint
-        public var deleteCustomLimit: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.CustomLimit.DeleteResponse
+        public var deleteCustomLimit: @Sendable (_ subaccountId: String) async throws -> Mailgun.Subaccounts.CustomLimit.Delete.Response
 
         @DependencyEndpoint
-        public var updateFeatures: @Sendable (_ subaccountId: String, _ request: Mailgun.Subaccounts.Features.UpdateRequest) async throws -> Mailgun.Subaccounts.Features.Response
+        public var updateFeatures: @Sendable (_ subaccountId: String, _ request: Mailgun.Subaccounts.Features.Update.Request) async throws -> Mailgun.Subaccounts.Features.Update.Response
     }
 }
