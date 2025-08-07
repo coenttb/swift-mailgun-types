@@ -12,18 +12,18 @@ extension Mailgun.Templates {
     @CasePathable
     @dynamicMemberLookup
     public enum API: Equatable, Sendable {
-        case create(domainId: Domain, request: Mailgun.Templates.Template.Create.Request)
-        case list(domainId: Domain, page: Page, limit: Int, p: String?)
-        case get(domainId: Domain, templateId: String, active: String?)
-        case update(domainId: Domain, templateId: String, request: Mailgun.Templates.Template.Update.Request)
-        case delete(domainId: Domain, templateId: String)
+        case list(domainId: Domain, request: Mailgun.Templates.List.Request?)
+        case create(domainId: Domain, request: Mailgun.Templates.Create.Request)
         case deleteAll(domainId: Domain)
-        case versions(domainId: Domain, templateName: String, page: Page?, limit: Int?, p: String?)
-        case createVersion(domainId: Domain, templateId: String, request: Mailgun.Templates.Version.Create.Request)
-        case getVersion(domainId: Domain, templateId: String, versionId: String)
-        case updateVersion(domainId: Domain, templateId: String, versionId: String, request: Mailgun.Templates.Version.Update.Request)
-        case deleteVersion(domainId: Domain, templateId: String, versionId: String)
-        case copyVersion(domainId: Domain, templateName: String, versionName: String, newVersionName: String, comment: String?)
+        case versions(domainId: Domain, templateName: String, request: Mailgun.Templates.Versions.Request?)
+        case createVersion(domainId: Domain, templateName: String, request: Mailgun.Templates.Version.Create.Request)
+        case get(domainId: Domain, templateName: String, request: Mailgun.Templates.Get.Request?)
+        case update(domainId: Domain, templateName: String, request: Mailgun.Templates.Update.Request)
+        case delete(domainId: Domain, templateName: String)
+        case getVersion(domainId: Domain, templateName: String, versionName: String)
+        case updateVersion(domainId: Domain, templateName: String, versionName: String, request: Mailgun.Templates.Version.Update.Request)
+        case deleteVersion(domainId: Domain, templateName: String, versionName: String)
+        case copyVersion(domainId: Domain, templateName: String, versionName: String, newVersionName: String, request: Mailgun.Templates.Version.Copy.Request?)
     }
 }
 
@@ -33,129 +33,29 @@ extension Mailgun.Templates.API {
 
         public var body: some URLRouting.Router<Mailgun.Templates.API> {
             OneOf {
-                // POST /v3/{domainId}/templates
-                Route(.case(Mailgun.Templates.API.create)) {
-                    let multipartFormCoding = URLFormCoding.Multipart.Conversion(
-                        Mailgun.Templates.Template.Create.Request.self,
-                        decoder: .mailgun,
-                        encoder: .mailgun
-                    )
-                    Headers {
-                        Field.contentType { multipartFormCoding.contentType }
-                    }
-                    Method.post
-                    Path { "v3" }
-                    Path { Parse(.string.representing(Domain.self)) }
-                    Path.templates
-                    Body(multipartFormCoding)
-                }
-
-                // GET /v3/{domainId}/templates/{templateId}
-                Route(.case(Mailgun.Templates.API.get)) {
-                    Method.get
-                    Path { "v3" }
-                    Path { Parse(.string.representing(Domain.self)) }
-                    Path.templates
-                    Path { Parse(.string) }
-                    Query {
-                        Optionally {
-                            Field("active") { Parse(.string) }
-                        }
-                    }
-                }
-
-                // PUT /v3/{domainId}/templates/{templateId}
-                Route(.case(Mailgun.Templates.API.update)) {
-                    let multipartFormCoding = URLFormCoding.Multipart.Conversion(
-                        Mailgun.Templates.Template.Update.Request.self,
-                        decoder: .mailgun,
-                        encoder: .mailgun
-                    )
-                    Headers {
-                        Field.contentType { multipartFormCoding.contentType }
-                    }
+                // PUT /v3/{domain_name}/templates/{template_name}/versions/{version_name}/copy/{new_version_name}
+                Route(.case(Mailgun.Templates.API.copyVersion)) {
                     Method.put
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     Path { Parse(.string) }
-                    Body(multipartFormCoding)
-                }
-
-                // DELETE /v3/{domainId}/templates/{templateId}
-                Route(.case(Mailgun.Templates.API.delete)) {
-                    Method.delete
-                    Path { "v3" }
-                    Path { Parse(.string.representing(Domain.self)) }
-                    Path.templates
-                    Path { Parse(.string) }
-                }
-
-                // DELETE /v3/{domainId}/templates/
-                Route(.case(Mailgun.Templates.API.deleteAll)) {
-                    Method.delete
-                    Path { "v3" }
-                    Path { Parse(.string.representing(Domain.self)) }
-                    Path.templates
-                }
-
-                // GET /v3/{domainId}/templates/{templateId}/versions
-                Route(.case(Mailgun.Templates.API.versions)) {
-                    Method.get
-                    Path { "v3" }
-                    Path { Parse(.string.representing(Domain.self)) }
-                    Path.templates
-                    Path { Parse(.string) }
                     Path.versions
-                    Query {
-                        Optionally {
-                            Field("page") { Parse(.string.representing(Mailgun.Templates.Page.self)) }
-                        }
-                    }
-                    Query {
-                        Optionally {
-                            Field("limit") { Digits() }
-                        }
-                    }
-
-                    Query {
-                        Optionally {
-                            Field("p") { Parse(.string) }
+                    Path { Parse(.string) }
+                    Path { "copy" }
+                    Path { Parse(.string) }
+                    Optionally {
+                        Parse(.memberwise(Mailgun.Templates.Version.Copy.Request.init)) {
+                            Query {
+                                Optionally {
+                                    Field("comment") { Parse(.string) }
+                                }
+                            }
                         }
                     }
                 }
-
-                // POST /v3/{domainId}/templates/{templateId}/versions
-                Route(.case(Mailgun.Templates.API.createVersion)) {
-                    let multipartFormCoding = URLFormCoding.Multipart.Conversion(
-                        Mailgun.Templates.Version.Create.Request.self,
-                        decoder: .mailgun,
-                        encoder: .mailgun
-                    )
-                    Headers {
-                        Field.contentType { multipartFormCoding.contentType }
-                    }
-                    Method.post
-                    Path { "v3" }
-                    Path { Parse(.string.representing(Domain.self)) }
-                    Path.templates
-                    Path { Parse(.string) }
-                    Path.versions
-                    Body(multipartFormCoding)
-                }
-
-                // GET /v3/{domainId}/templates/{templateId}/versions/{versionId}
-                Route(.case(Mailgun.Templates.API.getVersion)) {
-                    Method.get
-                    Path { "v3" }
-                    Path { Parse(.string.representing(Domain.self)) }
-                    Path.templates
-                    Path { Parse(.string) }
-                    Path.versions
-                    Path { Parse(.string) }
-                }
-
-                // PUT /v3/{domainId}/templates/{templateId}/versions/{versionId}
+                
+                // PUT /v3/{domain_name}/templates/{template_name}/versions/{version_name}
                 Route(.case(Mailgun.Templates.API.updateVersion)) {
                     let multipartFormCoding = URLFormCoding.Multipart.Conversion(
                         Mailgun.Templates.Version.Update.Request.self,
@@ -174,8 +74,8 @@ extension Mailgun.Templates.API {
                     Path { Parse(.string) }
                     Body(multipartFormCoding)
                 }
-
-                // DELETE /v3/{domainId}/templates/{templateId}/versions/{versionId}
+                
+                // DELETE /v3/{domain_name}/templates/{template_name}/versions/{version_name}
                 Route(.case(Mailgun.Templates.API.deleteVersion)) {
                     Method.delete
                     Path { "v3" }
@@ -185,40 +85,151 @@ extension Mailgun.Templates.API {
                     Path.versions
                     Path { Parse(.string) }
                 }
-
-                // PUT /v3/{domainId}/templates/{templateId}/versions/{versionId}/copy/{versionIdTo}
-                Route(.case(Mailgun.Templates.API.copyVersion)) {
-                    Method.put
+                
+                // GET /v3/{domain_name}/templates/{template_name}/versions/{version_name}
+                Route(.case(Mailgun.Templates.API.getVersion)) {
+                    Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     Path { Parse(.string) }
                     Path.versions
                     Path { Parse(.string) }
-                    Path { "copy" }
+                }
+                
+                // POST /v3/{domain_name}/templates/{template_name}/versions
+                Route(.case(Mailgun.Templates.API.createVersion)) {
+                    let multipartFormCoding = URLFormCoding.Multipart.Conversion(
+                        Mailgun.Templates.Version.Create.Request.self,
+                        decoder: .mailgun,
+                        encoder: .mailgun
+                    )
+                    Headers {
+                        Field.contentType { multipartFormCoding.contentType }
+                    }
+                    Method.post
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.templates
                     Path { Parse(.string) }
-                    Query {
-                        Optionally {
-                            Field("comment") { Parse(.string) }
+                    Path.versions
+                    Body(multipartFormCoding)
+                }
+                
+                // GET /v3/{domain_name}/templates/{template_name}/versions
+                Route(.case(Mailgun.Templates.API.versions)) {
+                    Method.get
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.templates
+                    Path { Parse(.string) }
+                    Path.versions
+                    Optionally {
+                        Parse(.memberwise(Mailgun.Templates.Versions.Request.init)) {
+                            Query {
+                                Optionally {
+                                    Field("page") { Parse(.string.representing(Mailgun.Templates.Page.self)) }
+                                }
+                                Optionally {
+                                    Field("limit") { Digits() }
+                                }
+                                Optionally {
+                                    Field("p") { Parse(.string) }
+                                }
+                            }
                         }
                     }
                 }
-
-                // GET /v3/{domainId}/templates
+                
+                // PUT /v3/{domain_name}/templates/{template_name}
+                Route(.case(Mailgun.Templates.API.update)) {
+                    let multipartFormCoding = URLFormCoding.Multipart.Conversion(
+                        Mailgun.Templates.Update.Request.self,
+                        decoder: .mailgun,
+                        encoder: .mailgun
+                    )
+                    Headers {
+                        Field.contentType { multipartFormCoding.contentType }
+                    }
+                    Method.put
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.templates
+                    Path { Parse(.string) }
+                    Body(multipartFormCoding)
+                }
+                
+                // DELETE /v3/{domain_name}/templates/{template_name}
+                Route(.case(Mailgun.Templates.API.delete)) {
+                    Method.delete
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.templates
+                    Path { Parse(.string) }
+                }
+                
+                // GET /v3/{domain_name}/templates/{template_name}
+                Route(.case(Mailgun.Templates.API.get)) {
+                    Method.get
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.templates
+                    Path { Parse(.string) }
+                    Optionally {
+                        Parse(.memberwise(Mailgun.Templates.Get.Request.init)) {
+                            Query {
+                                Optionally {
+                                    Field("active") { Parse(.string) }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // POST /v3/{domain_name}/templates
+                Route(.case(Mailgun.Templates.API.create)) {
+                    let multipartFormCoding = URLFormCoding.Multipart.Conversion(
+                        Mailgun.Templates.Create.Request.self,
+                        decoder: .mailgun,
+                        encoder: .mailgun
+                    )
+                    Headers {
+                        Field.contentType { multipartFormCoding.contentType }
+                    }
+                    Method.post
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.templates
+                    Body(multipartFormCoding)
+                }
+                
+                // DELETE /v3/{domain_name}/templates
+                Route(.case(Mailgun.Templates.API.deleteAll)) {
+                    Method.delete
+                    Path { "v3" }
+                    Path { Parse(.string.representing(Domain.self)) }
+                    Path.templates
+                }
+                
+                // GET /v3/{domain_name}/templates
                 Route(.case(Mailgun.Templates.API.list)) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
-                    Query {
-                        Field("page") { Parse(.string.representing(Mailgun.Templates.Page.self)) }
-                    }
-                    Query {
-                        Field("limit") { Digits() }
-                    }
-                    Query {
-                        Optionally {
-                            Field("p") { Parse(.string) }
+                    Optionally {
+                        Parse(.memberwise(Mailgun.Templates.List.Request.init)) {
+                            Query {
+                                Optionally {
+                                    Field("page") { Parse(.string.representing(Mailgun.Templates.Page.self)) }
+                                }
+                                Optionally {
+                                    Field("limit") { Digits() }
+                                }
+                                Optionally {
+                                    Field("p") { Parse(.string) }
+                                }
+                            }
                         }
                     }
                 }
