@@ -12,18 +12,18 @@ extension Mailgun.Webhooks {
     @DependencyClient
     public struct Client: Sendable {
         @DependencyEndpoint
-        public var list: @Sendable () async throws -> Response.List
+        public var list: @Sendable () async throws -> Mailgun.Webhooks.List.Response
 
         @DependencyEndpoint
-        public var get: @Sendable (_ type: Webhook.Variant) async throws -> Response.Webhook
+        public var get: @Sendable (_ webhookName: WebhookType) async throws -> Mailgun.Webhooks.Get.Response
 
         @DependencyEndpoint
-        public var create: @Sendable (_ type: Webhook.Variant, _ url: String) async throws -> Response
+        public var create: @Sendable (_ request: Create.Request) async throws -> Mailgun.Webhooks.Create.Response
 
         @DependencyEndpoint
-        public var update: @Sendable (_ type: Webhook.Variant, _ url: String) async throws -> Response
+        public var update: @Sendable (_ webhookName: WebhookType, _ request: Update.Request) async throws -> Mailgun.Webhooks.Update.Response
 
         @DependencyEndpoint
-        public var delete: @Sendable (_ type: Webhook.Variant) async throws -> Response
+        public var delete: @Sendable (_ webhookName: WebhookType) async throws -> Mailgun.Webhooks.Delete.Response
     }
 }
