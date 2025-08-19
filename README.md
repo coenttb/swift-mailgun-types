@@ -200,7 +200,7 @@ func sendWelcomeEmail(to email: EmailAddress, name: String) async throws {
         }
         .fontFamily(.systemUI)
         .padding(.rem(3))
-        .maxWidth(.rem(30))
+        .maxWidth(.identityComponentDesktop)
         .margin(.auto)
     }
     
