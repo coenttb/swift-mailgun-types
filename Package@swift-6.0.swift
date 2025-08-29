@@ -3,8 +3,6 @@
 import Foundation
 import PackageDescription
 
-let useLocalPackages = (try? String(contentsOfFile: "\(Context.packageDirectory)/.env.development", encoding: .utf8).contains("USE_LOCAL_PACKAGES=true")) == true
-
 extension String {
     static let mailgun: Self = "Mailgun"
     static let accountManagement: Self = "Mailgun AccountManagement"
@@ -107,14 +105,8 @@ let package = Package(
         .library(name: .shared, targets: [.shared])
     ],
     dependencies: [
-        useLocalPackages
-        ? .package(path: "../swift-mailgun-types")
-        : .package(url: "https://github.com/coenttb/swift-mailgun-types", from: "0.1.0"),
-        
-        useLocalPackages
-        ? .package(path: "../swift-mailgun-live")
-        : .package(url: "https://github.com/coenttb/swift-mailgun-live", from: "0.1.0"),
-        
+        .package(url: "https://github.com/coenttb/swift-mailgun-types", from: "0.1.0"),
+        .package(url: "https://github.com/coenttb/swift-mailgun-live", from: "0.1.0"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.9.2"),
         .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.4.3"),
         .package(url: "https://github.com/coenttb/swift-html", from: "0.0.1"),
